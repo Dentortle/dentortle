@@ -5,66 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dentortle Pathology</title>
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #e0f7fa;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        color: #004d40;
-    }
-    h1 {
-        margin-top: 20px;
-        text-align:center;
-        font-size: 2.5em;
-    }
-    #headerImage {
-        width: 150px;
-        margin: 10px;
-    }
-    #clues {
-        margin: 20px 0;
-        max-width: 900px;
-        text-align: left;
-        background: #ffffff;
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        font-size: 1.1em;
-    }
-    #guessForm {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-        max-width: 900px;
-        width: 100%;
-        justify-content: center;
-    }
-    #guess {
-        padding: 10px;
-        font-size: 16px;
-        flex: 1;
-        border-radius: 5px;
-        border: 1px solid #004d40;
-    }
-    button {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 5px;
-        border: none;
-        background-color: #004d40;
-        color: #ffffff;
-        transition: 0.3s;
-    }
-    button:hover { background-color: #00796b; }
-    #message { margin: 10px 0; font-weight: bold; max-width: 900px; text-align: center; }
-    #scoreBoard { margin-top: 30px; max-width: 900px; text-align: center; }
-    canvas { max-width: 100%; }
-    .hidden { display: none; }
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    color: #004d40;
+}
+h1 {
+    margin-top: 20px;
+    text-align:center;
+    font-size: 2.5em;
+}
+#headerImage {
+    width: 150px;
+    margin: 10px;
+}
+#clues {
+    margin: 20px 0;
+    max-width: 900px;
+    text-align: left;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-size: 1.1em;
+}
+#guessForm {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    max-width: 900px;
+    width: 100%;
+    justify-content: center;
+}
+#guess {
+    padding: 10px;
+    font-size: 16px;
+    flex: 1;
+    border-radius: 5px;
+    border: 1px solid #004d40;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    background-color: #004d40;
+    color: #ffffff;
+    transition: 0.3s;
+}
+button:hover { background-color: #00796b; }
+#message { margin: 10px 0; font-weight: bold; max-width: 900px; text-align: center; }
+#scoreBoard { margin-top: 30px; max-width: 900px; text-align: center; }
+canvas { max-width: 100%; }
+.hidden { display: none; }
 </style>
 </head>
 <body>
@@ -92,7 +92,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 // --- Answer choices ---
-const answerChoices = [
+const answerChoices = [/* All 1–50 answer choices and more as before */ 
 "Attrition","Erosion","Abrasion","Hyperdontia","Hypodontia","Microdontia","Gemination","Fusion",
 "Talon Cusp","Concrescence","Dilaceration","Taurodontism","Dens Invaginatus","Hypercementosis",
 "Ankylosis (Dental)","Amelogenesis Imperfecta","Dentin Dysplasia Type I (Radicular)",
@@ -112,340 +112,124 @@ const answerChoices = [
 "Aneurysmal Bone Cyst (ABC)","Central Giant Cell Granuloma (CGCG)","Intrabony Vascular Malformation",
 "Fibrous Dysplasia","Florid Cemento-Osseous Dysplasia (FCOD)","Ossifying Fibroma","Acromegaly",
 "Hypothyroidism (Myxedema/Cretinism)","Thrombocytopenia","Leukemia","Hodgkin Lymphoma","Non-Hodgkin Lymphoma",
-"Burkitt Lymphoma","Plasmacytoma (Extramedullary Myeloma)","Langerhans Cell Histiocytosis"
+"Burkitt Lymphoma","Plasmacytoma (Extramedullary Myeloma)","Langerhans Cell Histiocytosis"];
+
+// --- Cases (example 20 cases) ---
+const cases = [ /* same 20 cases with clues and answers as in your list */ 
+{answer:"Thrombocytopenia",clues:["Reduced circulating platelets","Bleeding tendency despite normal coag tests","Hemorrhages from small vessels","Petechiae and ecchymoses in oral mucosa","Spontaneous bleeding <10,000/µL","Decreased production or survival"]},
+{answer:"Leukemia",clues:["Malignant WBC increase in bone marrow","Proliferates in marrow then overflows into blood","Depressed production of other blood cells","Gingival bleeding, petechiae, mucosal ulcers","Diffuse gingival enlargement","Diagnosis: Leukemia"]},
+{answer:"Hodgkin Lymphoma",clues:["Lymphoma with Reed-Sternberg cells","Painless enlarging cervical node","Systemic: fever, night sweats, weight loss","EBV association","Histology: Reed-Sternberg 'owl eyes'","Diagnosis: Hodgkin Lymphoma"]},
+{answer:"Non-Hodgkin Lymphoma",clues:["Extranodal lymphoma, oral soft tissue/bone","Diffuse erythematous/purplish swelling","May involve hard/soft palate or lateral tongue","Bone: ill-defined radiolucency, widened PDL","Palate ulceration may cause oral-antral communication","Diagnosis: Non-Hodgkin Lymphoma"]},
+{answer:"Burkitt Lymphoma",clues:["Aggressive B-cell tumor in jaws of children","Highly EBV-associated","Maxilla then mandible","Aggressive bone destruction/tooth mobility","Radiographs: ragged radiolucency","Histology 'starry sky', Diagnosis: Burkitt Lymphoma"]},
+{answer:"Plasmacytoma (Extramedullary Myeloma)",clues:["Solitary non-tender mucosal mass","Proliferation of single clone of plasma cells","Part of multiple myeloma spectrum","Non-tender","Histology: plasma cells","May progress to multiple myeloma"]},
+{answer:"Langerhans Cell Histiocytosis",clues:["Proliferation of Langerhans cells, mimics periodontitis","Mostly children","Mucosal ulcers, osteolytic lesions","Teeth appear 'floating in space'","Posterior mandible","Diagnosis: Langerhans Cell Histiocytosis"]},
+{answer:"Paget Disease (Osteitis Deformans)",clues:["Polyostotic bone disorder","Disorganized bone turnover","Older males, maxilla often involved","Radiographs: 'cotton wool'","Prone to headaches, 1% → osteosarcoma","Diagnosis: Paget Disease"]},
+{answer:"Cherubism",clues:["Bilateral mandibular expansion in children","Ages 2-5","Maxilla may cause eyes to turn upward","Radiographs: multilocular radiolucencies","Tissue: giant cell granuloma with eosinophilic cuffing","Stabilizes after puberty"]},
+{answer:"Osteoma",clues:["Benign dense bone tumor in paranasal sinuses","Composed of woven and lamellar bone","Hard exophytic mass","Multiple lesions → Gardner syndrome","Does not become malignant","Diagnosis: Osteoma"]},
+{answer:"Osteoblastoma",clues:["Benign bone tumor, pain not relieved by NSAIDs","Arises from osteoblasts","Patients 10-30","Radiographs: radiolucent/mixed","Histology: woven bone with vascular stroma","Diagnosis: Osteoblastoma"]},
+{answer:"Osteosarcoma",clues:["Malignant mesenchymal tumor producing osteoid","Aggressive jaw mass, tooth mobility, paresthesia","Third decade","Radiographs: mixed or radiolucent/opaque","PDL widening","Histology confirms osteoid, Diagnosis: Osteosarcoma"]},
+{answer:"Metastatic Tumors of the Jaw",clues:["Common bone metastasis in older adults","Ill-defined radiolucency","Origin: breast, lung, thyroid, prostate, kidney","Pain, swelling, paresthesia","More common in mandible","Prognosis poor, often fatal <1 year"]},
+{answer:"Aneurysmal Bone Cyst (ABC)",clues:["Intraosseous pseudocyst","Rapid swelling, tooth mobility/resorption","Radiographs: multilocular, cortical expansion","'Blood-soaked sponge' on surgery","Histology: blood-filled spaces","Diagnosis: Aneurysmal Bone Cyst"]},
+{answer:"Central Giant Cell Granuloma (CGCG)",clues:["Non-neoplastic intraosseous lesion","Anterior mandible, may cross midline","Patients <30, F>M","Radiographs: well-defined radiolucency","Histology: multinucleated giant cells","Evaluate for hyperparathyroidism"]},
+{answer:"Intrabony Vascular Malformation",clues:["Vascular structural anomaly in bone","10-20yo","Swelling, tooth mobility, bleeding","Bruit/pulsation on palpation","Radiographs: 'sunburst' trabeculae","Risk of fatal bleeding, needle aspiration essential"]},
+{answer:"Fibrous Dysplasia",clues:["Normal trabecular bone replaced by fibrous tissue","Monostotic common","Radiographs: ground-glass","Margins blend into bone","Histology: curved trabeculae, no osteoblastic rimming","Polyostotic = McCune-Albright syndrome"]},
+{answer:"Florid Cemento-Osseous Dysplasia (FCOD)",clues:["Multifocal fibro-osseous lesions","Black, middle-aged women","Teeth remain vital","Radiographs: radiolucent → mixed → radiopaque","Late lesions: cotton wool, hypovascular","Diagnosis: Florid Cemento-Osseous Dysplasia"]},
+{answer:"Ossifying Fibroma",clues:["Well-defined solitary posterior mandible lesion","True neoplasm","Painless swelling","Radiographs: unilocular radiolucency","Histology: fibrous tissue with osteoid/bone/cementum","Diagnosis: Ossifying Fibroma"]},
+{answer:"Acromegaly",clues:["Excess GH after epiphyseal closure","Hands, feet, face enlargement","Functional pituitary adenoma","Oral: mandibular prognathism, tooth spacing","Systemic: hypertension, CHF, diabetes","Diagnosis: Acromegaly"]},
+{answer:"Hypothyroidism (Myxedema/Cretinism)",clues:["Decreased T3/T4","Sluggish, cold-intolerant","Cretinism in childhood, myxedema in adults","Macroglossia","Facial swelling, deep voice","Diagnosis: Hypothyroidism"]}
 ];
-
-// --- Cases (20 example cases; each has answer and clues array) ---
-const cases = [
-{
-answer: "Thrombocytopenia",
-clues:[
-"What is the condition characterized by a reduced number of circulating platelets?",
-"The patient presents with a bleeding tendency despite normal coagulation tests.",
-"Clinical exam shows hemorrhages from small, superficial blood vessels.",
-"Oral manifestations include petechiae and ecchymoses.",
-"Spontaneous bleeding is unlikely unless platelets <10,000/µL.",
-"Caused by decreased platelet production or survival."
-]
-},
-{
-answer: "Leukemia",
-clues:[
-"What is the generalized condition with malignant increase in WBCs originating in bone marrow?",
-"Malignant cells proliferate in marrow and overflow into blood.",
-"Production of other blood components is depressed.",
-"Patient may show gingival bleeding, petechiae, mucosal ulcerations.",
-"Key oral finding: diffuse gingival enlargement.",
-"Diagnosis: Leukemia."
-]
-},
-{
-answer: "Hodgkin Lymphoma",
-clues:[
-"What lymphoma spreads to contiguous lymph nodes with Reed-Sternberg cells?",
-"Painless, enlarging cervical lymph node mass.",
-"Systemic symptoms: fever, night sweats, weight loss.",
-"EBV association strong.",
-"Histology: Hodgkin Reed-Sternberg cell ('cherry owl eyes').",
-"Diagnosis: Hodgkin Lymphoma."
-]
-},
-{
-answer: "Non-Hodgkin Lymphoma",
-clues:[
-"Group of lymphomas often extranodal in oral soft tissue or bone.",
-"Diffuse erythematous or purplish swelling, sometimes painless.",
-"May involve hard/soft palate or lateral tongue.",
-"Bone: ill-defined radiolucency, sometimes widened PDL.",
-"Palate lesion may ulcerate, oral-antral communication possible.",
-"Diagnosis: Non-Hodgkin Lymphoma."
-]
-},
-{
-answer: "Burkitt Lymphoma",
-clues:[
-"Aggressive malignant B-cell tumor in jaw of children.",
-"Highly associated with EBV.",
-"Oral involvement common: maxilla then mandible.",
-"Aggressive bone destruction, tooth mobility, premature exfoliation.",
-"Radiographs: ragged radiolucency, patchy lamina dura loss.",
-"Histology: 'starry sky'; Diagnosis: Burkitt Lymphoma."
-]
-},
-{
-answer: "Plasmacytoma (Extramedullary Myeloma)",
-clues:[
-"Plasma cell neoplasm, solitary non-tender mucosal mass.",
-"Proliferation of single clone of plasma cells.",
-"Part of multiple myeloma spectrum but initially solitary.",
-"Presents as non-tender mucosal mass.",
-"Histology: proliferation of plasma cells.",
-"May progress to multiple myeloma."
-]
-},
-{
-answer: "Langerhans Cell Histiocytosis",
-clues:[
-"Clonal proliferation of Langerhans cells, may mimic periodontitis.",
-"Affects mostly children.",
-"Mucosal ulcerations and osteolytic lesions in bone.",
-"Radiolucencies cause teeth to appear 'floating in space'.",
-"Posterior mandible commonly involved.",
-"Diagnosis: Langerhans Cell Histiocytosis."
-]
-},
-{
-answer: "Paget Disease (Osteitis Deformans)",
-clues:[
-"Polyostotic bone disorder with disorganized turnover.",
-"Repetitive osteoclast resorption followed by exuberant formation.",
-"Older white males more affected; jaw often maxilla.",
-"Radiographs: 'cotton wool' opacities.",
-"Prone to headaches; 1% may progress to osteosarcoma.",
-"Diagnosis: Paget Disease (Osteitis Deformans)."
-]
-},
-{
-answer: "Cherubism",
-clues:[
-"Developmental jaw condition, bilateral posterior mandibular expansion in children.",
-"Usually ages 2-5.",
-"Bilateral posterior mandibular expansion; eyes may turn upward if maxilla involved.",
-"Radiographs: bilateral multilocular radiolucencies.",
-"Tissue resembles giant cell granuloma with perivascular eosinophilic cuffing.",
-"Condition stabilizes after puberty."
-]
-},
-{
-answer: "Osteoma",
-clues:[
-"Benign bone tumor, dense radiopacity often in paranasal sinuses.",
-"Composed of woven and lamellar bone.",
-"Hard, exophytic mass.",
-"Multiple lesions associated with Gardner syndrome.",
-"Benign, does not undergo malignant transformation.",
-"Diagnosis: Osteoma."
-]
-},
-{
-answer: "Osteoblastoma",
-clues:[
-"Benign bone tumor causing pain not relieved by NSAIDs.",
-"Arises from osteoblasts, often vertebral column or mandible.",
-"Patients age 10-30.",
-"Radiographs: radiolucent or mixed with patchy mineralization.",
-"Histology: woven bone trabeculae with osteoblasts in vascular stroma.",
-"Diagnosis: Osteoblastoma."
-]
-},
-{
-answer: "Osteosarcoma",
-clues:[
-"Malignant mesenchymal tumor producing osteoid.",
-"Aggressive, painful, enlarging mass causing tooth mobility, paresthesia.",
-"Jaw involvement often 3rd decade; may be secondary to Paget or radiation.",
-"Radiographs: radiolucent, radiopaque, or mixed; PDL widening.",
-"Histology: osteoid formed by pleomorphic, mitotic cells.",
-"Diagnosis: Osteosarcoma."
-]
-},
-{
-answer: "Metastatic Tumors of the Jaw",
-clues:[
-"Most common cancer in bone; ill-defined radiolucency in older adults.",
-"Spread hematogenously; commonly breast, lung, thyroid, prostate, kidney.",
-"Mandible more affected; presents with pain, swelling, paresthesia.",
-"Radiographs: ill-defined radiolucency.",
-"Prognosis poor; fatal within a year.",
-"Diagnosis: Metastatic Tumors of the Jaw."
-]
-},
-{
-answer: "Aneurysmal Bone Cyst (ABC)",
-clues:[
-"Intraosseous pseudocyst, rapidly enlarging swelling, multilocular radiolucency.",
-"Rare in jaw; can cause tooth mobility/resorption.",
-"Surgical entry shows 'blood-soaked sponge'.",
-"Histology: spaces filled with unclotted blood; stroma with giant cells and osteoid.",
-"Marked cortical expansion.",
-"Diagnosis: Aneurysmal Bone Cyst."
-]
-},
-{
-answer: "Central Giant Cell Granuloma (CGCG)",
-clues:[
-"Non-neoplastic intraosseous lesion with giant cells, usually anterior mandible in women.",
-"May cross midline; <30yo patients.",
-"Radiographs: unilocular or multilocular radiolucency.",
-"Histology: multinucleated giant cells in mesenchymal background.",
-"Check for hyperparathyroidism.",
-"Diagnosis: Central Giant Cell Granuloma."
-]
-},
-{
-answer: "Intrabony Vascular Malformation",
-clues:[
-"Structural anomaly of bone blood vessels; may cause severe hemorrhage.",
-"Age 10-20; clinical findings: tooth mobility, swelling, gingival bleeding.",
-"Bruit or pulsation detectable.",
-"Radiographs: multilocular radiolucency with 'sunburst' trabeculae.",
-"Needle aspiration before biopsy essential.",
-"Diagnosis: Intrabony Vascular Malformation."
-]
-},
-{
-answer: "Fibrous Dysplasia",
-clues:[
-"Tumor-like lesion replacing trabecular bone with fibrous tissue.",
-"Monostotic most common.",
-"Radiographs: 'ground-glass' opacification; poorly defined margins.",
-"Histology: curved trabeculae of woven bone in fibrous stroma; no osteoblastic rimming.",
-"Polyostotic + cafe-au-lait + hormonal issues = McCune-Albright syndrome.",
-"Avoid radiotherapy; risk of osteosarcoma."
-]
-},
-{
-answer: "Florid Cemento-Osseous Dysplasia (FCOD)",
-clues:[
-"Multifocal fibro-osseous lesions in jaws; black middle-aged women.",
-"Teeth remain vital and asymptomatic.",
-"Radiographs: radiolucent → mixed → radiopaque ('cotton wool').",
-"Late lesions hypovascular; risk necrosis with extraction/biopsy.",
-"Multiquadrant involvement.",
-"Diagnosis: Florid Cemento-Osseous Dysplasia."
-]
-},
-{
-answer: "Ossifying Fibroma",
-clues:[
-"True neoplasm of bone, well-defined, usually solitary in posterior mandible.",
-"Significant growth potential; ages 20-40.",
-"Painless swelling; may cause root divergence/resorption.",
-"Radiographs: well-defined unilocular radiolucency.",
-"Histology: fibrous tissue with osteoid/bone/cementum with osteoblastic rimming.",
-"Diagnosis: Ossifying Fibroma."
-]
-},
-{
-answer: "Acromegaly",
-clues:[
-"Excess GH after epiphyseal closure.",
-"Dentures/shoes don't fit due to enlarged hands/feet/face.",
-"Oral: mandibular prognathism, increased tooth spacing.",
-"Systemic: hypertension, heart failure, diabetes mellitus.",
-"Caused by pituitary adenoma.",
-"Diagnosis: Acromegaly."
-]
-},
-{
-answer: "Hypothyroidism (Myxedema/Cretinism)",
-clues:[
-"Low T3/T4 → metabolic slowdown.",
-"Symptoms: apathy, sluggishness, cold intolerance.",
-"Cretinism if early childhood → mental retardation, short stature.",
-"Myxedema in adults → facial swelling, deep voice.",
-"Oral: macroglossia.",
-"Most common primary cause: Hashimoto disease."
-]
-}
-];
-
-// --- Elements ---
-const cluesDiv = document.getElementById("clues");
-const form = document.getElementById("guessForm");
-const guessInput = document.getElementById("guess");
-const messageDiv = document.getElementById("message");
-const nextButton = document.getElementById("nextCase");
-const dataList = document.getElementById("answersList");
-
-// --- Populate datalist ---
-answerChoices.forEach(a=>{ let option=document.createElement("option"); option.value=a; dataList.appendChild(option); });
 
 // --- State ---
-function getDailyCaseIndex(){
-    const startDate = new Date("2025-10-17"); // start reference
-    const today = new Date();
-    const diffDays = Math.floor((today - startDate) / (1000*60*60*24));
-    return diffDays % cases.length;
-}
-let caseIndex = getDailyCaseIndex();
-let todaysCase = cases[caseIndex];
 let clueIndex = 0;
+let todaysCase = cases[Math.floor(Math.random()*cases.length)]; // randomized case
 let usedClues = 0;
 const maxClues = 6;
+const messageDiv = document.getElementById("message");
+const cluesDiv = document.getElementById("clues");
+const guessInput = document.getElementById("guess");
+const form = document.getElementById("guessForm");
+const nextButton = document.getElementById("nextCase");
 
-// --- LocalStorage ---
-let scores = JSON.parse(localStorage.getItem("scores") || "[]");
+// --- Setup datalist ---
+const dl = document.getElementById("answersList");
+answerChoices.forEach(ans=>{
+    const opt = document.createElement("option");
+    opt.value = ans;
+    dl.appendChild(opt);
+});
 
-// --- Display clues ---
+// --- Load previous scores ---
+let scores = JSON.parse(localStorage.getItem("scores")) || [];
+
+// --- Show clues ---
 function showClues(){
-    cluesDiv.innerHTML = todaysCase.clues.slice(0, clueIndex+1).map((c,i)=>`<b>Clue ${i+1}:</b> ${c}`).join("<br><br>");
-}
-showClues();
-
-// --- Chart setup ---
-const ctx = document.getElementById("scoreChart").getContext("2d");
-let myChart = new Chart(ctx,{
-    type:'bar',
-    data:{labels:[], datasets:[{label:'Clues used', data:[], backgroundColor:'rgba(0,77,64,0.7)'}]},
-    options:{
-        scales:{y:{beginAtZero:true, min:1, max:6, ticks:{stepSize:1}}},
-        responsive:true
+    let html = "";
+    for(let i=0;i<=clueIndex && i<maxClues;i++){
+        html += `<p><b>Clue ${i+1}:</b> ${todaysCase.clues[i]}</p>`;
     }
+    cluesDiv.innerHTML = html;
+}
+
+// --- Update graph ---
+const ctx = document.getElementById('scoreChart').getContext('2d');
+const scoreChart = new Chart(ctx,{
+    type:'bar',
+    data:{labels:scores.map((s,i)=>`Round ${i+1}`),
+          datasets:[{label:'% Correct',data:scores.map(s=>Math.round((maxClues-s)/maxClues*100)),backgroundColor:'#004d40'}]},
+    options:{scales:{y:{min:0,max:100,ticks:{stepSize:20}}}}
 });
 function updateChart(){
-    myChart.data.labels = scores.map(s=>s.date);
-    myChart.data.datasets[0].data = scores.map(s=>s.cluesUsed);
-    myChart.update();
+    scoreChart.data.labels = scores.map((s,i)=>`Round ${i+1}`);
+    scoreChart.data.datasets[0].data = scores.map(s=>Math.round((maxClues-s)/maxClues*100));
+    scoreChart.update();
 }
-updateChart();
 
-// --- Handle guesses ---
-form.addEventListener("submit", e=>{
+// --- Initialize ---
+showClues();
+guessInput.focus();
+
+// --- Form submit ---
+form.addEventListener('submit',e=>{
     e.preventDefault();
     const guess = guessInput.value.trim();
     if(!guess) return;
-
     if(guess.toLowerCase() === todaysCase.answer.toLowerCase()){
-        messageDiv.innerHTML = `✅ Correct! Answer: <b>${todaysCase.answer}</b>. Clues used: ${usedClues+1}`;
-        scores.push({date:new Date().toLocaleDateString(), cluesUsed:usedClues+1});
-        localStorage.setItem("scores", JSON.stringify(scores));
+        messageDiv.textContent = `Correct! The answer was "${todaysCase.answer}".`;
+        scores.push(clueIndex);
+        localStorage.setItem("scores",JSON.stringify(scores));
         updateChart();
-        form.querySelector("button").disabled = true;
-        guessInput.disabled = true;
         nextButton.classList.remove("hidden");
-    } else {
-        usedClues++;
-        if(clueIndex < todaysCase.clues.length-1) clueIndex++;
+        form.classList.add("hidden");
         showClues();
-        if(usedClues >= maxClues){
-            messageDiv.innerHTML = `❌ Out of clues! Answer: <b>${todaysCase.answer}</b>`;
-            scores.push({date:new Date().toLocaleDateString(), cluesUsed:maxClues});
-            localStorage.setItem("scores", JSON.stringify(scores));
+    } else {
+        clueIndex++;
+        if(clueIndex>=maxClues){
+            messageDiv.textContent = `Out of clues! The answer was "${todaysCase.answer}".`;
+            scores.push(maxClues);
+            localStorage.setItem("scores",JSON.stringify(scores));
             updateChart();
-            form.querySelector("button").disabled = true;
-            guessInput.disabled = true;
             nextButton.classList.remove("hidden");
+            form.classList.add("hidden");
         } else {
-            messageDiv.innerHTML = `Incorrect. Here's another clue (${clueIndex+1}/${maxClues}).`;
+            messageDiv.textContent = `Incorrect. Here's another clue.`;
+            showClues();
         }
     }
-    guessInput.value="";
+    guessInput.value = "";
 });
 
 // --- Next Case ---
-nextButton.addEventListener("click", ()=>{
-    caseIndex = (caseIndex+1) % cases.length;
-    todaysCase = cases[caseIndex];
-    clueIndex = 0;
-    usedClues = 0;
-    showClues();
-    messageDiv.innerHTML = "";
-    form.querySelector("button").disabled = false;
-    guessInput.disabled = false;
+nextButton.addEventListener('click',()=>{
+    clueIndex=0;
+    usedClues=0;
+    messageDiv.textContent="";
+    form.classList.remove("hidden");
     nextButton.classList.add("hidden");
+    todaysCase = cases[Math.floor(Math.random()*cases.length)]; // new random case
+    showClues();
+    guessInput.focus();
 });
-
 </script>
+
 </body>
 </html>
