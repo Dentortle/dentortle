@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dentordle</title>
+<title>Dentordle Pathology</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   body {
@@ -75,11 +75,11 @@
   }
 </style>
 </head>
+
 <body>
   <header>
-    <img src="https://raw.githubusercontent.com/davidabbott33-hub/Dentordle/refs/heads/main/ChatGPT%20Image%20Oct%2017%2C%202025%2C%2002_02_17%20PM.png" 
-         alt="Dentist Turtle">
-    <h1>Dentordle</h1>
+    <img src="https://raw.githubusercontent.com/davidabbott33-hub/Dentordle/refs/heads/main/ChatGPT%20Image%20Oct%2017%2C%202025%2C%2002_02_17%20PM.png" alt="Dentist Turtle">
+    <h1>Dentordle Pathology</h1>
   </header>
 
   <div class="game-container">
@@ -93,9 +93,7 @@
     <div id="game" style="display:none;">
       <div id="clues"></div>
       <input list="answerList" id="guessInput" placeholder="Type your diagnosis...">
-      <datalist id="answerList">
-      ["Acinic Cell Adenocarcinoma","Acquired Melanocytic Nevus (Intramucosal)","Acromegaly","Actinic Cheilosis","Acute Atrophic Candidiasis (Antibiotic Sore Mouth)","Addison Disease (Chronic Adrenocortical Insufficiency)","Adematoid Odontogenic Tumor (AOT)","Adenoid Cystic Carcinoma","Amalgam Tattoo","Ameloblastoma (Conventional Solid/Multicystic)","Ameloblastoma (Unicystic Variant)","Ameloblastic Fibroma","Ameloblastic Fibro-Odontoma","Amelogenesis Imperfecta","Amyloidosis (Primary/Myeloma Associated)","Anemia (General)","Ankyloglossia","Ankylosis","Aneurysmal Bone Cyst","Angular Cheilitis","Ankylosis","Aplastic Anemia","Attrition","Basal Cell Adenoma","Basal Cell Carcinoma","Burkitt Lymphoma","Calcifying Odontogenic Cyst (COC)","Canalicular Adenoma","Cat-scratch Disease","Central Giant Cell Granuloma","Central Papillary Atrophy (Median Rhomboid Glossitis)","Cementoblastoma","Cherubism","Chronic Cutaneous Lupus Erythematosus (CCLE)","Chronic Hyperplastic Candidiasis","Cleidocranial Dysplasia","Condensing Osteitis","Condyloma Accuminatum","Congenital Epulis","Coronal Dentin Dysplasia (Type II)","Crohn Disease","Dens Invaginatus","Dentigerous Cyst","Dentinogenesis Imperfecta","Denture Stomatitis (Chronic Atrophic Candidiasis)","Dermoid Cyst","Dilaceration","Double Lip","Erosion","Erythema Migrans (Geographic Tongue)","Erythema Multiforme Minor","Epulis Fissuratum","Exostoses","External Resorption","Fissured Tongue","Fibroma","Fibrous Dysplasia (Monostotic)","Focal Cemento-Osseous Dysplasia","Fordyce Granules","Flord Cemento-Osseous Dysplasia","Fractinal Keratosis","Fusion","Gardner Syndrome","Gemination","Gingival Cyst of the Adult","Granular Cell Tumor","Granulomatosis with Polyangiitis (Wegener Granulomatosis)","Gorlin Syndrome (Nevoid Basal Cell Carcinoma Syndrome)","Graft-vs.-Host Disease (Chronic)","Hairy Tongue","Hand-Foot-and-Mouth Disease (Enterovirus)","Herpangina (Enterovirus)","Herpetiform Aphthous Ulcerations","Herpes Zoster (Shingles, HHV-3)","Hereditary Hemorrhagic Telangiectasia","Histoplasmosis (Disseminated)","Hodgkin Lymphoma","Hypercementosis","Hyperdontia (Mesiodens)","Hyperparathyroidism","Hypodontia","Hypothyroidism (Cretinism)","Hypothyroidism (Myxedema)","Infectious Mononucleosis (EBV)","Inflammatory Papillary Hyperplasia","Internal Resorption","Intraoral Recurrent Herpes Simplex Infection","Intraosseous Mucoepidermoid Carcinoma","Intrabony Vascular Malformation","Kaposi Sarcoma (HHV-8)","Leukoedema","Leukemia","Leukoplakia","Lichen Planus (Erosive)","Lichen Planus (Reticular)","Linea Alba","Linear Gingival Erythema (HIV-associated)","Lipoma","Lateral Periodontal Cyst","Langerhans Cell Histiocytosis","Lingual Thyroid","Lingual Varicosities","Lymphatic Malformation (Lymphangioma)","Major Aphthous Ulcerations","Macroglossia","Melanoma (Oral)","Metastatic Tumors of the Jaw","Metastatic Tumors of the Oral Soft Tissues","Microdontia","Minor Aphthous Ulcerations","Mucormycosis","Mucous Membrane Pemphigoid","Multiple Endocrine Neoplasia Syndrome 2B (MEN 2B)","Multiple Myeloma","Multifocal Epithelial Hyperplasia (Heck Disease)","Necrotizing Stomatitis","Necrotizing Sialometaplasia","Necrotizing Ulcerative Gingivitis (NUG)","Necrotizing Ulcerative Periodontitis (NUP)","Neurofibroma","Neurofibromatosis (von Recklinghausen Disease)","Neurilemmoma (Schwannoma)","Neutropenia","Nicotine Stomatitis","Non-Hodgkin Lymphoma","Nasal Duct Cyst","Nasolabial Cyst","Nasopalatine Duct Cyst","Odontogenic Keratocyst","Odontoma","Osteoblastoma","Osteoma","Osteosarcoma","Osteosclerosis","Ossifying Fibroma","Oral Hairy Leukoplakia (EBV)","Oral Melanotic Macule","Oral Submucous Fibrosis","Papillon-Lefèvre Syndrome","Papilloma","Paradental Cyst","Periapical Cemento-Osseous Dysplasia","Periapical Cyst","Periapical Granuloma","Peripheral Giant Cell Granuloma","Peripheral Ossifying Fibroma","Peutz-Jeghers Syndrome","Pemphigus","Pleomorphic Adenoma","Plasmacytoma (Extramedullary Myeloma)","Proliferative Verrucous Leukoplakia (PVL)","Primary Herpetic Gingivostomatitis (HSV)","Pseudomembranous Candidiasis (Thrush)","Pyogenic Granuloma","Ranula","Recurrent Herpes Simplex Infection (Herpes Labialis)","Residual Cyst","Riga-Fede Disease","Salivary Duct Cyst","Sarcoidosis","Sialolithiasis","Sjogren Syndrome","Simple Bone Cyst","Smokeless Tobacco Keratosis","Squamous Cell Carcinoma (Oropharyngeal, HPV-associated)","Squamous Cell Carcinoma (SSC)","Stafne Defect","Stevens-Johnson Syndrome (EM Major)","Sturge-Weber Angiomatosis","Systemic Lupus Erythematosus (SLE)","Syphilis (Primary)","Syphilis (Secondary)","Syphilis (Tertiary)","Syphilitic Hypoplasia","Talons Cusp","Taurodontism","Torus Mandibularis","Torus Palatinus","Traumatic Granuloma (TUGSE)","Traumatic Neuroma","Traumatic Ulceration","Toxic Epidermal Necrolysis (EM Major)","Turner Hypoplasia","Tuberculosis (Primary)","Tuberculosis (Secondary)","Tuberculosis (Scrofula)","Ulcerative Colitis","Varicella (Chicken Pox, HHV-3)","Vascular Malformation","Verruciform Xanthoma","Verrucous Carcinoma","Warthin Tumor (Papillary Cystadenoma Lymphomatosum)","White Sponge Nevus","Xerostomia"]
-      </datalist>
+      <datalist id="answerList"></datalist>
       <div>
         <button id="submitGuess">Submit Guess</button>
         <button id="nextCase" style="display:none;">Next Case</button>
@@ -111,8 +109,9 @@
   <footer>Created by David Abbott</footer>
 
   <script>
-    const cases = 
-      {answer:"Attrition",clues:["An 82-year-old male presents complaining of generalized loss of incisal and occlusal tooth structure.","Physical examination shows that both the tooth structure and existing restorations (e.g., amalgam) are evenly worn down.","Radiographically, the slow loss of structure has allowed for dentin to be synthesized over the pulpal surface.","Histology would show loss of tooth structure caused by tooth-to-tooth contact during occlusion and mastication.","The patient reports a history of chronic grinding habits or premature contacts.","The process is typically asymptomatic, and pulp exposure or sensitivity is rare due to the slow progression."]},
+    // ======== CASE DATA (INLINE FORMAT) =========
+    const cases = [
+ {answer:"Attrition",clues:["An 82-year-old male presents complaining of generalized loss of incisal and occlusal tooth structure.","Physical examination shows that both the tooth structure and existing restorations (e.g., amalgam) are evenly worn down.","Radiographically, the slow loss of structure has allowed for dentin to be synthesized over the pulpal surface.","Histology would show loss of tooth structure caused by tooth-to-tooth contact during occlusion and mastication.","The patient reports a history of chronic grinding habits or premature contacts.","The process is typically asymptomatic, and pulp exposure or sensitivity is rare due to the slow progression."]},
 {answer:"Erosion",clues:["The patient presents complaining of sensitivity, which is primarily located on the lingual surfaces of maxillary anterior teeth.","Involvement of the posterior teeth is noted on the occlusal surfaces.","Radiographs of posterior teeth show that the edges of metallic restorations are elevated above the level of the tooth structure.","Histopathology reveals a loss of tooth structure caused by a chemical process, likely due to chronic regurgitation.","An environmental factor, such as exposure to acid found in foods, drinks, or medications, is generally implicated.","This form of tooth wear is classified as a pathological process."]},
 {answer:"Abrasion",clues:["A patient presents with localized loss of tooth structure in the cervical region opposite their dominant hand.","Physical exam reveals V-shaped notches near the cementoenamel junction.","Radiographs show a distinct loss of structure secondary to the action of an external agent.","Histology is defined by pathologic loss of tooth structure, generally caused by an external agent such as aggressive toothbrushing or holding pipe stems.","The patient is asymptomatic, as pulp exposure and dentin sensitivity are rare.","Treatment usually involves identifying and eliminating the external causal agent."]},
 {answer:"Hyperdontia (Mesiodens)",clues:["A 15-year-old male is undergoing orthodontic evaluation and is noted to have an extra tooth.","Clinically, this supernumerary tooth is located in the maxillary anterior incisor region.","Radiographs confirm the presence of a single, extra permanent tooth.","Histologically, the tooth structures appear normal but are in excess of the standard number.","This condition is more common in males and occurs most often in the maxillary anterior region.","The mesiodens form is the most common type of hyperdontia."]},
@@ -306,9 +305,14 @@
 {answer:"Calcifying Odontogenic Cyst (COC)",clues:["A 30-year-old patient presents with an intraosseous cystic lesion in the incisor/canine area.","Examination is not relevant.","Radiographs show a well-defined unilocular radiolucency, often mixed with radiodensities.","Histology shows an odontogenic epithelial lining containing ghost cells (squamous cells that lost their nucleus).","The lesion may be associated with an unerupted canine.","The prognosis is good, and the lesion is treated with enucleation."]},
 {answer:"Lateral Periodontal Cyst",clues:["A 55-year-old male presents with an intrabony lesion.","Examination is not relevant.","Radiographs show a well-circumscribed unilocular radiolucent lesion located lateral to the roots of vital teeth.","Histology shows a lining of flattened squamous epithelial cells.","Treatment is simple surgical excision, and the prognosis is excellent."]},
 {answer:"Myxoma",clues:["A patient (average age 25–30) presents with a tumor derived from odontogenic ectomesenchyme.","Examination is not relevant.","Radiographs show a unilocular or multilocular radiolucency with irregular or scalloped margins.","Histology shows stellate or spindle-shaped cells in a loose myxoid stroma with few collagen fibers, resembling immature pulp.","The lesion is difficult to remove because the ground substance resembles jello.","The prognosis is guarded due to a 25% recurrence rate."]},
-      // Add more cases here following same pattern
     ];
 
+    // ======== ANSWER LIST =========
+    const allAnswers = ["Acinic Cell Adenocarcinoma","Acquired Melanocytic Nevus (Intramucosal)","Acromegaly","Actinic Cheilosis","Acute Atrophic Candidiasis (Antibiotic Sore Mouth)","Addison Disease (Chronic Adrenocortical Insufficiency)","Adematoid Odontogenic Tumor (AOT)","Adenoid Cystic Carcinoma","Amalgam Tattoo","Ameloblastoma (Conventional Solid/Multicystic)","Ameloblastoma (Unicystic Variant)","Ameloblastic Fibroma","Ameloblastic Fibro-Odontoma","Amelogenesis Imperfecta","Amyloidosis (Primary/Myeloma Associated)","Anemia (General)","Ankyloglossia","Ankylosis","Aneurysmal Bone Cyst","Angular Cheilitis","Ankylosis","Aplastic Anemia","Attrition","Basal Cell Adenoma","Basal Cell Carcinoma","Burkitt Lymphoma","Calcifying Odontogenic Cyst (COC)","Canalicular Adenoma","Cat-scratch Disease","Central Giant Cell Granuloma","Central Papillary Atrophy (Median Rhomboid Glossitis)","Cementoblastoma","Cherubism","Chronic Cutaneous Lupus Erythematosus (CCLE)","Chronic Hyperplastic Candidiasis","Cleidocranial Dysplasia","Condensing Osteitis","Condyloma Accuminatum","Congenital Epulis","Coronal Dentin Dysplasia (Type II)","Crohn Disease","Dens Invaginatus","Dentigerous Cyst","Dentinogenesis Imperfecta","Denture Stomatitis (Chronic Atrophic Candidiasis)","Dermoid Cyst","Dilaceration","Double Lip","Erosion","Erythema Migrans (Geographic Tongue)","Erythema Multiforme Minor","Epulis Fissuratum","Exostoses","External Resorption","Fissured Tongue","Fibroma","Fibrous Dysplasia (Monostotic)","Focal Cemento-Osseous Dysplasia","Fordyce Granules","Flord Cemento-Osseous Dysplasia","Fractinal Keratosis","Fusion","Gardner Syndrome","Gemination","Gingival Cyst of the Adult","Granular Cell Tumor","Granulomatosis with Polyangiitis (Wegener Granulomatosis)","Gorlin Syndrome (Nevoid Basal Cell Carcinoma Syndrome)","Graft-vs.-Host Disease (Chronic)","Hairy Tongue","Hand-Foot-and-Mouth Disease (Enterovirus)","Herpangina (Enterovirus)","Herpetiform Aphthous Ulcerations","Herpes Zoster (Shingles, HHV-3)","Hereditary Hemorrhagic Telangiectasia","Histoplasmosis (Disseminated)","Hodgkin Lymphoma","Hypercementosis","Hyperdontia (Mesiodens)","Hyperparathyroidism","Hypodontia","Hypothyroidism (Cretinism)","Hypothyroidism (Myxedema)","Infectious Mononucleosis (EBV)","Inflammatory Papillary Hyperplasia","Internal Resorption","Intraoral Recurrent Herpes Simplex Infection","Intraosseous Mucoepidermoid Carcinoma","Intrabony Vascular Malformation","Kaposi Sarcoma (HHV-8)","Leukoedema","Leukemia","Leukoplakia","Lichen Planus (Erosive)","Lichen Planus (Reticular)","Linea Alba","Linear Gingival Erythema (HIV-associated)","Lipoma","Lateral Periodontal Cyst","Langerhans Cell Histiocytosis","Lingual Thyroid","Lingual Varicosities","Lymphatic Malformation (Lymphangioma)","Major Aphthous Ulcerations","Macroglossia","Melanoma (Oral)","Metastatic Tumors of the Jaw","Metastatic Tumors of the Oral Soft Tissues","Microdontia","Minor Aphthous Ulcerations","Mucormycosis","Mucous Membrane Pemphigoid","Multiple Endocrine Neoplasia Syndrome 2B (MEN 2B)","Multiple Myeloma","Multifocal Epithelial Hyperplasia (Heck Disease)","Necrotizing Stomatitis","Necrotizing Sialometaplasia","Necrotizing Ulcerative Gingivitis (NUG)","Necrotizing Ulcerative Periodontitis (NUP)","Neurofibroma","Neurofibromatosis (von Recklinghausen Disease)","Neurilemmoma (Schwannoma)","Neutropenia","Nicotine Stomatitis","Non-Hodgkin Lymphoma","Nasal Duct Cyst","Nasolabial Cyst","Nasopalatine Duct Cyst","Odontogenic Keratocyst","Odontoma","Osteoblastoma","Osteoma","Osteosarcoma","Osteosclerosis","Ossifying Fibroma","Oral Hairy Leukoplakia (EBV)","Oral Melanotic Macule","Oral Submucous Fibrosis","Papillon-Lefèvre Syndrome","Papilloma","Paradental Cyst","Periapical Cemento-Osseous Dysplasia","Periapical Cyst","Periapical Granuloma","Peripheral Giant Cell Granuloma","Peripheral Ossifying Fibroma","Peutz-Jeghers Syndrome","Pemphigus","Pleomorphic Adenoma","Plasmacytoma (Extramedullary Myeloma)","Proliferative Verrucous Leukoplakia (PVL)","Primary Herpetic Gingivostomatitis (HSV)","Pseudomembranous Candidiasis (Thrush)","Pyogenic Granuloma","Ranula","Recurrent Herpes Simplex Infection (Herpes Labialis)","Residual Cyst","Riga-Fede Disease","Salivary Duct Cyst","Sarcoidosis","Sialolithiasis","Sjogren Syndrome","Simple Bone Cyst","Smokeless Tobacco Keratosis","Squamous Cell Carcinoma (Oropharyngeal, HPV-associated)","Squamous Cell Carcinoma (SSC)","Stafne Defect","Stevens-Johnson Syndrome (EM Major)","Sturge-Weber Angiomatosis","Systemic Lupus Erythematosus (SLE)","Syphilis (Primary)","Syphilis (Secondary)","Syphilis (Tertiary)","Syphilitic Hypoplasia","Talons Cusp","Taurodontism","Torus Mandibularis","Torus Palatinus","Traumatic Granuloma (TUGSE)","Traumatic Neuroma","Traumatic Ulceration","Toxic Epidermal Necrolysis (EM Major)","Turner Hypoplasia","Tuberculosis (Primary)","Tuberculosis (Secondary)","Tuberculosis (Scrofula)","Ulcerative Colitis","Varicella (Chicken Pox, HHV-3)","Vascular Malformation","Verruciform Xanthoma","Verrucous Carcinoma","Warthin Tumor (Papillary Cystadenoma Lymphomatosum)","White Sponge Nevus","Xerostomia"];
+    const answerList = document.getElementById("answerList");
+    allAnswers.forEach(a => { const option = document.createElement("option"); option.value = a; answerList.appendChild(option); });
+
+    // ======== GAME LOGIC =========
     let currentCase, clueIndex, mode;
     let scores = JSON.parse(localStorage.getItem("dentordleScores") || "[]");
 
@@ -385,26 +389,24 @@
       nextCaseBtn.style.display = "none";
     }
 
+    // ======== CHART =========
     let chart;
     function updateChart() {
       const ctx = document.getElementById('scoreChart').getContext('2d');
-      if (chart) chart.destroy();
-      chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: scores.map((_,i)=>i+1),
-          datasets: [{
-            label: 'Clues Used',
-            data: scores,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {beginAtZero:true, max:6}
-          }
-        }
-      });
+      if (!chart) {
+        chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: scores.map((_,i)=>i+1),
+            datasets: [{label: 'Clues Used per Round', data: scores, borderWidth: 1}]
+          },
+          options: {scales: {y: {beginAtZero:true, max:6}}}
+        });
+      } else {
+        chart.data.labels = scores.map((_,i)=>i+1);
+        chart.data.datasets[0].data = scores;
+        chart.update();
+      }
     }
 
     startBtn.onclick = startGame;
