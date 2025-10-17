@@ -3,101 +3,302 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dentortle Pathology</title>
+<title>Dentordle Pathology</title>
 <style>
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f8ff;
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom right, #e6f0ff, #ffffff);
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0;
-    padding: 0;
     min-height: 100vh;
-    color: #004d40;
-}
-h1 {
-    margin-top: 20px;
-    text-align:center;
-    font-size: 2.5em;
-}
-#headerImage {
-    width: 150px;
-    margin: 10px;
-}
-#clues {
-    margin: 20px 0;
-    max-width: 900px;
-    text-align: left;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    font-size: 1.1em;
-}
-#guessForm {
-    display: flex;
-    gap: 10px;
+    margin: 0;
+    text-align: center;
+  }
+  h1 {
+    color: #003366;
+    margin-bottom: 5px;
+    font-size: 3em;
+  }
+  img {
+    width: 120px;
     margin-bottom: 20px;
+  }
+  #game-container {
+    background: #ffffffcc;
+    padding: 30px 50px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     max-width: 900px;
-    width: 100%;
-    justify-content: center;
-}
-#guess {
+    width: 90%;
+  }
+  #clues p {
+    font-size: 1.2em;
+    margin: 10px 0;
+  }
+  input[type="text"] {
+    font-size: 1em;
     padding: 10px;
-    font-size: 16px;
-    flex: 1;
+    width: 70%;
     border-radius: 5px;
-    border: 1px solid #004d40;
-}
-button {
+    border: 1px solid #888;
+    margin-top: 10px;
+  }
+  button {
+    font-size: 1em;
     padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
+    margin: 10px 5px;
     border: none;
-    background-color: #004d40;
-    color: #ffffff;
-    transition: 0.3s;
-}
-button:hover { background-color: #00796b; }
-#message { margin: 10px 0; font-weight: bold; max-width: 900px; text-align: center; }
-#scoreBoard { margin-top: 30px; max-width: 900px; text-align: center; }
-canvas { max-width: 100%; }
-.hidden { display: none; }
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #0066cc;
+    color: white;
+    transition: 0.2s;
+  }
+  button:hover {
+    background-color: #004a99;
+  }
+  #footer {
+    margin-top: auto;
+    font-size: 0.9em;
+    color: #555;
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+  }
+  canvas {
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
 </style>
 </head>
 <body>
 
-<h1>Dentortle Pathology</h1>
-<img src="https://i.imgur.com/4o9YkXU.png" alt="Dentist Turtle" id="headerImage">
+<h1>Dentordle Pathology</h1>
+<img src="https://i.imgur.com/JW5s3zz.png" alt="Dentist Turtle">
 
-<div id="clues">Loading today's case...</div>
-
-<form id="guessForm">
-    <input type="text" id="guess" placeholder="Type your answer here..." list="answersList" autocomplete="off">
-    <datalist id="answersList"></datalist>
-    <button type="submit">Submit</button>
-</form>
-
-<button id="nextCase" class="hidden">Next Case</button>
-
-<div id="message"></div>
-
-<div id="scoreBoard">
-    <h2>Past Performance</h2>
-    <canvas id="scoreChart" width="400" height="200"></canvas>
+<div id="game-container">
+  <select id="mode-select">
+    <option value="daily">Daily Puzzle</option>
+    <option value="unlimited">Unlimited Practice</option>
+  </select>
+  
+  <div id="clues"></div>
+  
+  <input type="text" id="guess" list="options" placeholder="Enter your diagnosis">
+  <datalist id="options">
+    <!-- Full answer options pasted here -->
+    <option value="Acinic Cell Adenocarcinoma">
+    <option value="Acquired Melanocytic Nevus (Intramucosal)">
+    <option value="Acromegaly">
+    <option value="Actinic Cheilosis">
+    <option value="Acute Atrophic Candidiasis (Antibiotic Sore Mouth)">
+    <option value="Addison Disease (Chronic Adrenocortical Insufficiency)">
+    <option value="Adematoid Odontogenic Tumor (AOT)">
+    <option value="Adenoid Cystic Carcinoma">
+    <option value="Amalgam Tattoo">
+    <option value="Ameloblastoma (Conventional Solid/Multicystic)">
+    <option value="Ameloblastoma (Unicystic Variant)">
+    <option value="Ameloblastic Fibroma">
+    <option value="Ameloblastic Fibro-Odontoma">
+    <option value="Amelogenesis Imperfecta">
+    <option value="Amyloidosis (Primary/Myeloma Associated)">
+    <option value="Anemia (General)">
+    <option value="Ankyloglossia">
+    <option value="Ankylosis">
+    <option value="Aneurysmal Bone Cyst">
+    <option value="Angular Cheilitis">
+    <option value="Aplastic Anemia">
+    <option value="Attrition">
+    <option value="Basal Cell Adenoma">
+    <option value="Basal Cell Carcinoma">
+    <option value="Burkitt Lymphoma">
+    <option value="Calcifying Odontogenic Cyst (COC)">
+    <option value="Canalicular Adenoma">
+    <option value="Cat-scratch Disease">
+    <option value="Central Giant Cell Granuloma">
+    <option value="Central Papillary Atrophy (Median Rhomboid Glossitis)">
+    <option value="Cementoblastoma">
+    <option value="Cherubism">
+    <option value="Chronic Cutaneous Lupus Erythematosus (CCLE)">
+    <option value="Chronic Hyperplastic Candidiasis">
+    <option value="Cleidocranial Dysplasia">
+    <option value="Condensing Osteitis">
+    <option value="Condyloma Accuminatum">
+    <option value="Congenital Epulis">
+    <option value="Coronal Dentin Dysplasia (Type II)">
+    <option value="Crohn Disease">
+    <option value="Dens Invaginatus">
+    <option value="Dentigerous Cyst">
+    <option value="Dentinogenesis Imperfecta">
+    <option value="Denture Stomatitis (Chronic Atrophic Candidiasis)">
+    <option value="Dermoid Cyst">
+    <option value="Dilaceration">
+    <option value="Double Lip">
+    <option value="Erosion">
+    <option value="Erythema Migrans (Geographic Tongue)">
+    <option value="Erythema Multiforme Minor">
+    <option value="Epulis Fissuratum">
+    <option value="Exostoses">
+    <option value="External Resorption">
+    <option value="Fissured Tongue">
+    <option value="Fibroma">
+    <option value="Fibrous Dysplasia (Monostotic)">
+    <option value="Focal Cemento-Osseous Dysplasia">
+    <option value="Fordyce Granules">
+    <option value="Flord Cemento-Osseous Dysplasia">
+    <option value="Fractinal Keratosis">
+    <option value="Fusion">
+    <option value="Gardner Syndrome">
+    <option value="Gemination">
+    <option value="Gingival Cyst of the Adult">
+    <option value="Granular Cell Tumor">
+    <option value="Granulomatosis with Polyangiitis (Wegener Granulomatosis)">
+    <option value="Gorlin Syndrome (Nevoid Basal Cell Carcinoma Syndrome)">
+    <option value="Graft-vs.-Host Disease (Chronic)">
+    <option value="Hairy Tongue">
+    <option value="Hand-Foot-and-Mouth Disease (Enterovirus)">
+    <option value="Herpangina (Enterovirus)">
+    <option value="Herpetiform Aphthous Ulcerations">
+    <option value="Herpes Zoster (Shingles, HHV-3)">
+    <option value="Hereditary Hemorrhagic Telangiectasia">
+    <option value="Histoplasmosis (Disseminated)">
+    <option value="Hodgkin Lymphoma">
+    <option value="Hypercementosis">
+    <option value="Hyperdontia (Mesiodens)">
+    <option value="Hyperparathyroidism">
+    <option value="Hypodontia">
+    <option value="Hypothyroidism (Cretinism)">
+    <option value="Hypothyroidism (Myxedema)">
+    <option value="Infectious Mononucleosis (EBV)">
+    <option value="Inflammatory Papillary Hyperplasia">
+    <option value="Internal Resorption">
+    <option value="Intraoral Recurrent Herpes Simplex Infection">
+    <option value="Intraosseous Mucoepidermoid Carcinoma">
+    <option value="Intrabony Vascular Malformation">
+    <option value="Kaposi Sarcoma (HHV-8)">
+    <option value="Leukoedema">
+    <option value="Leukemia">
+    <option value="Leukoplakia">
+    <option value="Lichen Planus (Erosive)">
+    <option value="Lichen Planus (Reticular)">
+    <option value="Linea Alba">
+    <option value="Linear Gingival Erythema (HIV-associated)">
+    <option value="Lipoma">
+    <option value="Lateral Periodontal Cyst">
+    <option value="Langerhans Cell Histiocytosis">
+    <option value="Lingual Thyroid">
+    <option value="Lingual Varicosities">
+    <option value="Lymphatic Malformation (Lymphangioma)">
+    <option value="Major Aphthous Ulcerations">
+    <option value="Macroglossia">
+    <option value="Melanoma (Oral)">
+    <option value="Metastatic Tumors of the Jaw">
+    <option value="Metastatic Tumors of the Oral Soft Tissues">
+    <option value="Microdontia">
+    <option value="Minor Aphthous Ulcerations">
+    <option value="Mucormycosis">
+    <option value="Mucous Membrane Pemphigoid">
+    <option value="Multiple Endocrine Neoplasia Syndrome 2B (MEN 2B)">
+    <option value="Multiple Myeloma">
+    <option value="Multifocal Epithelial Hyperplasia (Heck Disease)">
+    <option value="Necrotizing Stomatitis">
+    <option value="Necrotizing Sialometaplasia">
+    <option value="Necrotizing Ulcerative Gingivitis (NUG)">
+    <option value="Necrotizing Ulcerative Periodontitis (NUP)">
+    <option value="Neurofibroma">
+    <option value="Neurofibromatosis (von Recklinghausen Disease)">
+    <option value="Neurilemmoma (Schwannoma)">
+    <option value="Neutropenia">
+    <option value="Nicotine Stomatitis">
+    <option value="Non-Hodgkin Lymphoma">
+    <option value="Nasal Duct Cyst">
+    <option value="Nasolabial Cyst">
+    <option value="Nasopalatine Duct Cyst">
+    <option value="Odontogenic Keratocyst">
+    <option value="Odontoma">
+    <option value="Osteoblastoma">
+    <option value="Osteoma">
+    <option value="Osteosarcoma">
+    <option value="Osteosclerosis">
+    <option value="Ossifying Fibroma">
+    <option value="Oral Hairy Leukoplakia (EBV)">
+    <option value="Oral Melanotic Macule">
+    <option value="Oral Submucous Fibrosis">
+    <option value="Papillon-Lefèvre Syndrome">
+    <option value="Papilloma">
+    <option value="Paradental Cyst">
+    <option value="Periapical Cemento-Osseous Dysplasia">
+    <option value="Periapical Cyst">
+    <option value="Periapical Granuloma">
+    <option value="Peripheral Giant Cell Granuloma">
+    <option value="Peripheral Ossifying Fibroma">
+    <option value="Peutz-Jeghers Syndrome">
+    <option value="Pemphigus">
+    <option value="Pleomorphic Adenoma">
+    <option value="Plasmacytoma (Extramedullary Myeloma)">
+    <option value="Proliferative Verrucous Leukoplakia (PVL)">
+    <option value="Primary Herpetic Gingivostomatitis (HSV)">
+    <option value="Pseudomembranous Candidiasis (Thrush)">
+    <option value="Pyogenic Granuloma">
+    <option value="Ranula">
+    <option value="Recurrent Herpes Simplex Infection (Herpes Labialis)">
+    <option value="Residual Cyst">
+    <option value="Riga-Fede Disease">
+    <option value="Salivary Duct Cyst">
+    <option value="Sarcoidosis">
+    <option value="Sialolithiasis">
+    <option value="Sjogren Syndrome">
+    <option value="Simple Bone Cyst">
+    <option value="Smokeless Tobacco Keratosis">
+    <option value="Squamous Cell Carcinoma (Oropharyngeal, HPV-associated)">
+    <option value="Squamous Cell Carcinoma (SSC)">
+    <option value="Stafne Defect">
+    <option value="Stevens-Johnson Syndrome (EM Major)">
+    <option value="Sturge-Weber Angiomatosis">
+    <option value="Systemic Lupus Erythematosus (SLE)">
+    <option value="Syphilis (Primary)">
+    <option value="Syphilis (Secondary)">
+    <option value="Syphilis (Tertiary)">
+    <option value="Syphilitic Hypoplasia">
+    <option value="Talons Cusp">
+    <option value="Taurodontism">
+    <option value="Torus Mandibularis">
+    <option value="Torus Palatinus">
+    <option value="Traumatic Granuloma (TUGSE)">
+    <option value="Traumatic Neuroma">
+    <option value="Traumatic Ulceration">
+    <option value="Toxic Epidermal Necrolysis (EM Major)">
+    <option value="Turner Hypoplasia">
+    <option value="Tuberculosis (Primary)">
+    <option value="Tuberculosis (Secondary)">
+    <option value="Tuberculosis (Scrofula)">
+    <option value="Ulcerative Colitis">
+    <option value="Varicella (Chicken Pox, HHV-3)">
+    <option value="Vascular Malformation">
+    <option value="Verruciform Xanthoma">
+    <option value="Verrucous Carcinoma">
+    <option value="Warthin Tumor (Papillary Cystadenoma Lymphomatosum)">
+    <option value="White Sponge Nevus">
+    <option value="Xerostomia">
+  </datalist>
+  
+  <button id="submit-guess">Submit Guess</button>
+  <button id="next-case">Next Case</button>
 </div>
+
+<canvas id="scoreChart" width="400" height="200"></canvas>
+
+<div id="footer">Created by David Abbott</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// --- Answer choices ---
-const answerChoices = [/* All 1–50 answer choices and more as before */ 
-"Acinic Cell Adenocarcinoma","Acquired Melanocytic Nevus (Intramucosal)","Acromegaly","Actinic Cheilosis","Acute Atrophic Candidiasis (Antibiotic Sore Mouth)","Addison Disease (Chronic Adrenocortical Insufficiency)","Adematoid Odontogenic Tumor (AOT)","Adenoid Cystic Carcinoma","Amalgam Tattoo","Ameloblastoma (Conventional Solid/Multicystic)","Ameloblastoma (Unicystic Variant)","Ameloblastic Fibroma","Ameloblastic Fibro-Odontoma","Amelogenesis Imperfecta","Amyloidosis (Primary/Myeloma Associated)","Anemia (General)","Ankyloglossia","Ankylosis","Aneurysmal Bone Cyst","Angular Cheilitis","Ankylosis","Aplastic Anemia","Attrition","Basal Cell Adenoma","Basal Cell Carcinoma","Burkitt Lymphoma","Calcifying Odontogenic Cyst (COC)","Canalicular Adenoma","Cat-scratch Disease","Central Giant Cell Granuloma","Central Papillary Atrophy (Median Rhomboid Glossitis)","Cementoblastoma","Cherubism","Chronic Cutaneous Lupus Erythematosus (CCLE)","Chronic Hyperplastic Candidiasis","Cleidocranial Dysplasia","Condensing Osteitis","Condyloma Accuminatum","Congenital Epulis","Coronal Dentin Dysplasia (Type II)","Crohn Disease","Dens Invaginatus","Dentigerous Cyst","Dentinogenesis Imperfecta","Denture Stomatitis (Chronic Atrophic Candidiasis)","Dermoid Cyst","Dilaceration","Double Lip","Erosion","Erythema Migrans (Geographic Tongue)","Erythema Multiforme Minor","Epulis Fissuratum","Exostoses","External Resorption","Fissured Tongue","Fibroma","Fibrous Dysplasia (Monostotic)","Focal Cemento-Osseous Dysplasia","Fordyce Granules","Flord Cemento-Osseous Dysplasia","Fractinal Keratosis","Fusion","Gardner Syndrome","Gemination","Gingival Cyst of the Adult","Granular Cell Tumor","Granulomatosis with Polyangiitis (Wegener Granulomatosis)","Gorlin Syndrome (Nevoid Basal Cell Carcinoma Syndrome)","Graft-vs.-Host Disease (Chronic)","Hairy Tongue","Hand-Foot-and-Mouth Disease (Enterovirus)","Herpangina (Enterovirus)","Herpetiform Aphthous Ulcerations","Herpes Zoster (Shingles, HHV-3)","Hereditary Hemorrhagic Telangiectasia","Histoplasmosis (Disseminated)","Hodgkin Lymphoma","Hypercementosis","Hyperdontia (Mesiodens)","Hyperparathyroidism","Hypodontia","Hypothyroidism (Cretinism)","Hypothyroidism (Myxedema)","Infectious Mononucleosis (EBV)","Inflammatory Papillary Hyperplasia","Internal Resorption","Intraoral Recurrent Herpes Simplex Infection","Intraosseous Mucoepidermoid Carcinoma","Intrabony Vascular Malformation","Kaposi Sarcoma (HHV-8)","Leukoedema","Leukemia","Leukoplakia","Lichen Planus (Erosive)","Lichen Planus (Reticular)","Linea Alba","Linear Gingival Erythema (HIV-associated)","Lipoma","Lateral Periodontal Cyst","Langerhans Cell Histiocytosis","Lingual Thyroid","Lingual Varicosities","Lymphatic Malformation (Lymphangioma)","Major Aphthous Ulcerations","Macroglossia","Melanoma (Oral)","Metastatic Tumors of the Jaw","Metastatic Tumors of the Oral Soft Tissues","Microdontia","Minor Aphthous Ulcerations","Mucormycosis","Mucous Membrane Pemphigoid","Multiple Endocrine Neoplasia Syndrome 2B (MEN 2B)","Multiple Myeloma","Multifocal Epithelial Hyperplasia (Heck Disease)","Necrotizing Stomatitis","Necrotizing Sialometaplasia","Necrotizing Ulcerative Gingivitis (NUG)","Necrotizing Ulcerative Periodontitis (NUP)","Neurofibroma","Neurofibromatosis (von Recklinghausen Disease)","Neurilemmoma (Schwannoma)","Neutropenia","Nicotine Stomatitis","Non-Hodgkin Lymphoma","Nasal Duct Cyst","Nasolabial Cyst","Nasopalatine Duct Cyst","Odontogenic Keratocyst","Odontoma","Osteoblastoma","Osteoma","Osteosarcoma","Osteosclerosis","Ossifying Fibroma","Oral Hairy Leukoplakia (EBV)","Oral Melanotic Macule","Oral Submucous Fibrosis","Papillon-Lefèvre Syndrome","Papilloma","Paradental Cyst","Periapical Cemento-Osseous Dysplasia","Periapical Cyst","Periapical Granuloma","Peripheral Giant Cell Granuloma","Peripheral Ossifying Fibroma","Peutz-Jeghers Syndrome","Pemphigus","Pleomorphic Adenoma","Plasmacytoma (Extramedullary Myeloma)","Proliferative Verrucous Leukoplakia (PVL)","Primary Herpetic Gingivostomatitis (HSV)","Pseudomembranous Candidiasis (Thrush)","Pyogenic Granuloma","Ranula","Recurrent Herpes Simplex Infection (Herpes Labialis)","Residual Cyst","Riga-Fede Disease","Salivary Duct Cyst","Sarcoidosis","Sialolithiasis","Sjogren Syndrome","Simple Bone Cyst","Smokeless Tobacco Keratosis","Squamous Cell Carcinoma (Oropharyngeal, HPV-associated)","Squamous Cell Carcinoma (SSC)","Stafne Defect","Stevens-Johnson Syndrome (EM Major)","Sturge-Weber Angiomatosis","Systemic Lupus Erythematosus (SLE)","Syphilis (Primary)","Syphilis (Secondary)","Syphilis (Tertiary)","Syphilitic Hypoplasia","Talons Cusp","Taurodontism","Torus Mandibularis","Torus Palatinus","Traumatic Granuloma (TUGSE)","Traumatic Neuroma","Traumatic Ulceration","Toxic Epidermal Necrolysis (EM Major)","Turner Hypoplasia","Tuberculosis (Primary)","Tuberculosis (Secondary)","Tuberculosis (Scrofula)","Ulcerative Colitis","Varicella (Chicken Pox, HHV-3)","Vascular Malformation","Verruciform Xanthoma","Verrucous Carcinoma","Warthin Tumor (Papillary Cystadenoma Lymphomatosum)","White Sponge Nevus","Xerostomia"
-];
-
-// --- Cases (example 20 cases) ---
-const cases = [ /* same 20 cases with clues and answers as in your list */ 
+// =====================
+// ====== CASES =======
+// =====================
+const cases = [
 {answer:"Attrition",clues:["An 82-year-old male presents complaining of generalized loss of incisal and occlusal tooth structure.","Physical examination shows that both the tooth structure and existing restorations (e.g., amalgam) are evenly worn down.","Radiographically, the slow loss of structure has allowed for dentin to be synthesized over the pulpal surface.","Histology would show loss of tooth structure caused by tooth-to-tooth contact during occlusion and mastication.","The patient reports a history of chronic grinding habits or premature contacts.","The process is typically asymptomatic, and pulp exposure or sensitivity is rare due to the slow progression."]},
 {answer:"Erosion",clues:["The patient presents complaining of sensitivity, which is primarily located on the lingual surfaces of maxillary anterior teeth.","Involvement of the posterior teeth is noted on the occlusal surfaces.","Radiographs of posterior teeth show that the edges of metallic restorations are elevated above the level of the tooth structure.","Histopathology reveals a loss of tooth structure caused by a chemical process, likely due to chronic regurgitation.","An environmental factor, such as exposure to acid found in foods, drinks, or medications, is generally implicated.","This form of tooth wear is classified as a pathological process."]},
 {answer:"Abrasion",clues:["A patient presents with localized loss of tooth structure in the cervical region opposite their dominant hand.","Physical exam reveals V-shaped notches near the cementoenamel junction.","Radiographs show a distinct loss of structure secondary to the action of an external agent.","Histology is defined by pathologic loss of tooth structure, generally caused by an external agent such as aggressive toothbrushing or holding pipe stems.","The patient is asymptomatic, as pulp exposure and dentin sensitivity are rare.","Treatment usually involves identifying and eliminating the external causal agent."]},
@@ -291,101 +492,110 @@ const cases = [ /* same 20 cases with clues and answers as in your list */
 {answer:"Ameloblastic Fibro-Odontoma",clues:["A 10-year-old male presents with a lesion in the posterior mandible.","Examination is not relevant.","Radiographs show a unilocular or multilocular radiolucency with variable amounts of calcification.","Histology confirms a disorganized mass of dentin, enamel, cementum, and pulp tissue.","The tumor is considered a hamartoma (proliferation of normal tissue in a normal location).","Treatment is local excision, and the prognosis is excellent."]},
 {answer:"Calcifying Odontogenic Cyst (COC)",clues:["A 30-year-old patient presents with an intraosseous cystic lesion in the incisor/canine area.","Examination is not relevant.","Radiographs show a well-defined unilocular radiolucency, often mixed with radiodensities.","Histology shows an odontogenic epithelial lining containing ghost cells (squamous cells that lost their nucleus).","The lesion may be associated with an unerupted canine.","The prognosis is good, and the lesion is treated with enucleation."]},
 {answer:"Lateral Periodontal Cyst",clues:["A 55-year-old male presents with an intrabony lesion.","Examination is not relevant.","Radiographs show a well-circumscribed unilocular radiolucent lesion located lateral to the roots of vital teeth.","Histology shows a lining of flattened squamous epithelial cells.","Treatment is simple surgical excision, and the prognosis is excellent."]},
-{answer:"Myxoma",clues:["A patient (average age 25–30) presents with a tumor derived from odontogenic ectomesenchyme.","Examination is not relevant.","Radiographs show a unilocular or multilocular radiolucency with irregular or scalloped margins.","Histology shows stellate or spindle-shaped cells in a loose myxoid stroma with few collagen fibers, resembling immature pulp.","The lesion is difficult to remove because the ground substance resembles jello.","The prognosis is guarded due to a 25% recurrence rate."]},
+{answer:"Myxoma",clues:["A patient (average age 25–30) presents with a tumor derived from odontogenic ectomesenchyme.","Examination is not relevant.","Radiographs show a unilocular or multilocular radiolucency with irregular or scalloped margins.","Histology shows stellate or spindle-shaped cells in a loose myxoid stroma with few collagen fibers, resembling immature pulp.","The lesion is difficult to remove because the ground substance resembles jello.","The prognosis is guarded due to a 25% recurrence rate."]}, 
+];
 
-
-    
-// --- State ---
+// =====================
+// ====== GAME STATE =====
+let currentCase = null;
 let clueIndex = 0;
-let todaysCase = cases[Math.floor(Math.random()*cases.length)]; // randomized case
-let usedClues = 0;
-const maxClues = 6;
-const messageDiv = document.getElementById("message");
+let scoreHistory = JSON.parse(localStorage.getItem("scoreHistory") || "[]");
+
+// =====================
+// ====== DOM ELEMENTS =====
 const cluesDiv = document.getElementById("clues");
 const guessInput = document.getElementById("guess");
-const form = document.getElementById("guessForm");
-const nextButton = document.getElementById("nextCase");
+const submitBtn = document.getElementById("submit-guess");
+const nextBtn = document.getElementById("next-case");
+const modeSelect = document.getElementById("mode-select");
 
-// --- Setup datalist ---
-const dl = document.getElementById("answersList");
-answerChoices.forEach(ans=>{
-    const opt = document.createElement("option");
-    opt.value = ans;
-    dl.appendChild(opt);
-});
-
-// --- Load previous scores ---
-let scores = JSON.parse(localStorage.getItem("scores")) || [];
-
-// --- Show clues ---
-function showClues(){
-    let html = "";
-    for(let i=0;i<=clueIndex && i<maxClues;i++){
-        html += `<p><b>Clue ${i+1}:</b> ${todaysCase.clues[i]}</p>`;
-    }
-    cluesDiv.innerHTML = html;
+// =====================
+// ====== FUNCTIONS =====
+function getDailyCase() {
+  const start = new Date("2025-10-17");
+  const today = new Date();
+  const diffDays = Math.floor((today - start) / (1000*60*60*24));
+  return cases[diffDays % cases.length];
 }
 
-// --- Update graph ---
-const ctx = document.getElementById('scoreChart').getContext('2d');
-const scoreChart = new Chart(ctx,{
-    type:'bar',
-    data:{labels:scores.map((s,i)=>`Round ${i+1}`),
-          datasets:[{label:'% Correct',data:scores.map(s=>Math.round((maxClues-s)/maxClues*100)),backgroundColor:'#004d40'}]},
-    options:{scales:{y:{min:0,max:100,ticks:{stepSize:20}}}}
-});
-function updateChart(){
-    scoreChart.data.labels = scores.map((s,i)=>`Round ${i+1}`);
-    scoreChart.data.datasets[0].data = scores.map(s=>Math.round((maxClues-s)/maxClues*100));
-    scoreChart.update();
+function getRandomCase() {
+  return cases[Math.floor(Math.random() * cases.length)];
 }
 
-// --- Initialize ---
-showClues();
-guessInput.focus();
+function startCase() {
+  clueIndex = 0;
+  cluesDiv.innerHTML = "";
+  guessInput.value = "";
+  guessInput.disabled = false;
+  submitBtn.disabled = false;
+  currentCase = modeSelect.value === "daily" ? getDailyCase() : getRandomCase();
+  showClues();
+}
 
-// --- Form submit ---
-form.addEventListener('submit',e=>{
-    e.preventDefault();
-    const guess = guessInput.value.trim();
-    if(!guess) return;
-    if(guess.toLowerCase() === todaysCase.answer.toLowerCase()){
-        messageDiv.textContent = `Correct! The answer was "${todaysCase.answer}".`;
-        scores.push(clueIndex);
-        localStorage.setItem("scores",JSON.stringify(scores));
-        updateChart();
-        nextButton.classList.remove("hidden");
-        form.classList.add("hidden");
-        showClues();
+function showClues() {
+  cluesDiv.innerHTML = currentCase.clues.slice(0, clueIndex+1)
+    .map((c,i)=>`<p>Clue #${i+1}: ${c}</p>`).join("");
+}
+
+submitBtn.onclick = function() {
+  const guess = guessInput.value.trim().toLowerCase();
+  if(guess === currentCase.answer.toLowerCase()) {
+    alert("Correct! ✅");
+    recordScore(clueIndex + 1);
+    guessInput.disabled = true;
+    submitBtn.disabled = true;
+  } else {
+    clueIndex++;
+    if(clueIndex >= currentCase.clues.length) {
+      alert(`Out of clues! The answer was: ${currentCase.answer}`);
+      recordScore(6);
+      guessInput.disabled = true;
+      submitBtn.disabled = true;
     } else {
-        clueIndex++;
-        if(clueIndex>=maxClues){
-            messageDiv.textContent = `Out of clues! The answer was "${todaysCase.answer}".`;
-            scores.push(maxClues);
-            localStorage.setItem("scores",JSON.stringify(scores));
-            updateChart();
-            nextButton.classList.remove("hidden");
-            form.classList.add("hidden");
-        } else {
-            messageDiv.textContent = `Incorrect. Here's another clue.`;
-            showClues();
-        }
+      showClues();
     }
-    guessInput.value = "";
+  }
+};
+
+nextBtn.onclick = startCase;
+
+function recordScore(score) {
+  scoreHistory.push(score);
+  localStorage.setItem("scoreHistory", JSON.stringify(scoreHistory));
+  updateChart();
+}
+
+// =====================
+// ====== CHART =====
+const ctx = document.getElementById('scoreChart').getContext('2d');
+const scoreChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: scoreHistory.map((_,i)=>`Round ${i+1}`),
+    datasets: [{
+      label: 'Clues Used',
+      data: scoreHistory,
+      backgroundColor: '#0066cc'
+    }]
+  },
+  options: {
+    scales: {
+      y: { min:0, max:6, ticks: { stepSize: 1 } }
+    }
+  }
 });
 
-// --- Next Case ---
-nextButton.addEventListener('click',()=>{
-    clueIndex=0;
-    usedClues=0;
-    messageDiv.textContent="";
-    form.classList.remove("hidden");
-    nextButton.classList.add("hidden");
-    todaysCase = cases[Math.floor(Math.random()*cases.length)]; // new random case
-    showClues();
-    guessInput.focus();
-});
+function updateChart() {
+  scoreChart.data.labels = scoreHistory.map((_,i)=>`Round ${i+1}`);
+  scoreChart.data.datasets[0].data = scoreHistory;
+  scoreChart.update();
+}
+
+// =====================
+// ====== INIT =====
+startCase();
+updateChart();
+
 </script>
-
 </body>
 </html>
