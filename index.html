@@ -25,20 +25,6 @@
     <img src="https://raw.githubusercontent.com/davidabbott33-hub/Dentordle/refs/heads/main/ChatGPT%20Image%20Oct%2017%2C%202025%2C%2002_02_17%20PM.png" alt="Dentist Turtle">
     <h1>Dentortle</h1>
   </header>
-  <div id="instructions" style="max-width:600px; background:white; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.15); padding:20px; margin-top:10px; text-align:center;">
-  <h2>How to Play</h2>
-  <p><b>Dentordle Pathology</b> is a daily dental pathology guessing game inspired by Wordle — but for dentists to train in oral pathology!</p>
-  <ul style="text-align:left; display:inline-block; line-height:1.6;">
-    <li>Each case has <b>6 clues</b> that describe a specific oral pathology.</li>
-    <li>Type your diagnosis in the answer box — as you type, a list of matching pathologies will appear for you to choose from.</li>
-    <li>After each incorrect guess, a <b>new clue</b> is revealed (the previous clues stay visible).</li>
-    <li>You have up to <b>6 guesses</b> to identify the correct diagnosis.</li>
-    <li>Choose between <b>Daily Puzzle</b> (one shared case per day) or <b>Unlimited Mode</b> for endless practice.</li>
-    <li>Your performance is tracked over time and displayed on the score chart below.</li>
-  </ul>
-  <p>Sharpen your diagnostic skills and see how efficiently you can solve each mystery!</p>
-</div>
-
 
   <div class="game-container">
     <h3>Choose Mode</h3>
@@ -366,5 +352,64 @@ function updateChart(){
 
 updateChart();
 </script>
+
+  <!-- Instructions Popup Modal -->
+<div id="instructionsModal" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+">
+  <div style="
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    max-width: 600px;
+    width: 90%;
+    padding: 25px;
+    text-align: center;
+    animation: fadeIn 0.4s ease-in-out;
+  ">
+    <h2>How to Play Dentordle</h2>
+    <p><b>Dentordle</b> is a dental pathology guessing game inspired by Wordle!</p>
+    <ul style="text-align:left; display:inline-block; line-height:1.6;">
+      <li>Each case has <b>6 clues</b> describing a specific oral pathology.</li>
+      <li>Type your diagnosis — matching answers will appear as suggestions.</li>
+      <li>After each wrong guess, a <b>new clue</b> appears.</li>
+      <li>You get <b>6 total guesses</b> per case.</li>
+      <li>Play the <b>Daily Puzzle</b> or try <b>Unlimited Mode</b> for extra practice.</li>
+    </ul>
+    <button onclick="closeModal()" style="
+      background-color: #0078D7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    ">Start Game</button>
+  </div>
+</div>
+
+<!-- Modal fade animation -->
+<style>
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(0.95);}
+  to {opacity: 1; transform: scale(1);}
+}
+</style>
+
+<!-- JS to close modal -->
+<script>
+function closeModal() {
+  document.getElementById("instructionsModal").style.display = "none";
+}
+</script>
+
 </body>
 </html>
