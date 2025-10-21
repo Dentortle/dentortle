@@ -502,23 +502,30 @@ function showDailyPlayedMessage() {
     const score = obj.score;
     const won = obj.won;
     const emojiGrid = obj.emojiGrid || ("🟥".repeat(6));
-    // show a friendly message on-screen rather than alert
-    // we assume you have a `resultDiv` element to display messages (if not, adapt)
+
+    // Create or use a message area
     const resultDiv = document.getElementById('result') || document.createElement('div');
     resultDiv.style.marginTop = "12px";
-    resultDiv.innerHTML = `<strong>You've already played today's Daily Puzzle.</strong><br>${won ? `${score}/6 clues` : `X/6 clues (failed)`}`;
+    resultDiv.style.textAlign = "center";
+    resultDiv.innerHTML = `
+      <strong>You've already played today's case!</strong><br>
+      ${won ? `${score}/6 clues 🦷` : `X/6 clues 💀`}
+    `;
+
     if (!document.getElementById('result')) {
-      // attach if it wasn't present
       const container = document.querySelector('.game-container') || document.body;
       container.appendChild(resultDiv);
     }
-    // show share UI for this stored result
+
+    // Always show share button for their stored result
     showShareButton(obj.shareText, emojiGrid);
     return true;
   } catch(e) {
+    console.error("Failed to parse stored daily:", e);
     return false;
   }
 }
+
 
 /* ---------- Usage notes for integrating with your existing code ----------
 1) When the user finishes the DAILY puzzle (wins or runs out of clues), call:
