@@ -255,8 +255,9 @@ const allAnswers = ["Acinic Cell Adenocarcinoma","Acquired Melanocytic Nevus (In
 const answerList = document.getElementById("answerList");
 allAnswers.forEach(a => { const option = document.createElement("option"); option.value = a; answerList.appendChild(option); });
 
+<script>
 let currentCase, clueIndex, mode;
-let scores = JSON.parse(localStorage.getItem("dentordleScores")||"[]");
+let scores = JSON.parse(localStorage.getItem("dentordleScores") || "[]");
 
 const startBtn = document.getElementById("startBtn");
 const submitGuess = document.getElementById("submitGuess");
@@ -267,213 +268,44 @@ const guessInput = document.getElementById("guessInput");
 const gameDiv = document.getElementById("game");
 const modeSelect = document.getElementById("mode");
 
+// ===== DAILY PUZZLE STORAGE KEY =====
+function getDayKey() {
+  const today = new Date();
+  const dayString = today.toISOString().slice(0, 10); // YYYY-MM-DD
+  return "dentordle_daily_" + dayString;
+}
+
+// ===== GET DAILY CASE =====
 function getDailyCase() {
   const today = new Date();
-  const daySeed = today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate();
+  const daySeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
   return cases[daySeed % cases.length];
 }
 
-function startGame() {
-  mode = modeSelect.value;
-  clueIndex = 0;
-  resultDiv.innerHTML = "";
-  guessInput.value = "";
-  nextCaseBtn.style.display = "none";
-
-  if(mode==="daily"){
-    if(localStorage.getItem("dentordleDailyPlayed") === new Date().toDateString()){
-      resultDiv.innerHTML = "✅ You've already played today's case!";
-      submitGuess.disabled = true;
-      gameDiv.style.display = "block";
-      return;
-    }
-    currentCase = getDailyCase();
-  } else {
-    currentCase = cases[Math.floor(Math.random()*cases.length)];
-  }
-
-  gameDiv.style.display = "block";
-  submitGuess.disabled = false;
-  displayClues();
-}
-
-function displayClues(){
-  let html="";
-  for(let i=0;i<=clueIndex;i++){
-    if(currentCase.clues[i]) html+=`<p><b>Clue ${i+1}:</b> ${currentCase.clues[i]}</p>`;
-  }
-  cluesDiv.innerHTML=html;
-}
-
-function submitGuessFunc(){
-  const guess = guessInput.value.trim();
-  if(!guess) return;
-
-  if(guess.toLowerCase()===currentCase.answer.toLowerCase()){
-    resultDiv.innerHTML=`🎉 Correct! The diagnosis is: <b>${currentCase.answer}</b>`;
-    scores.push(clueIndex+1);
-    localStorage.setItem("dentordleScores", JSON.stringify(scores));
-    submitGuess.disabled=true;
-    nextCaseBtn.style.display = mode==="unlimited"?"inline-block":"none";
-    if(mode==="daily") localStorage.setItem("dentordleDailyPlayed", new Date().toDateString());
-    updateChart();
-  } else {
-    clueIndex++;
-    if(clueIndex>=currentCase.clues.length){
-      resultDiv.innerHTML=`❌ Out of clues! The correct diagnosis was: <b>${currentCase.answer}</b>`;
-      scores.push(currentCase.clues.length);
-      localStorage.setItem("dentordleScores", JSON.stringify(scores));
-      submitGuess.disabled=true;
-      nextCaseBtn.style.display = mode==="unlimited"?"inline-block":"none";
-      if(mode==="daily") localStorage.setItem("dentordleDailyPlayed", new Date().toDateString());
-      updateChart();
-    } else displayClues();
-  }
-  guessInput.value="";
-}
-
-startBtn.addEventListener("click", startGame);
-submitGuess.addEventListener("click", submitGuessFunc);
-nextCaseBtn.addEventListener("click", startGame);
-
-// ===== CHART =====
-const ctx = document.getElementById("scoreChart").getContext("2d");
-const chart = new Chart(ctx,{
-  type:'line',
-  data:{ labels:scores.map((_,i)=>i+1), datasets:[{label:'Guesses to Solve', data:scores, borderColor:'#0077b6', backgroundColor:'rgba(0,119,182,0.2)', tension:0.2 }]},
-  options:{ responsive:true, scales:{ y:{min:0,max:6,ticks:{stepSize:1}}}}
-});
-
-function updateChart(){
-  chart.data.labels = scores.map((_,i)=>i+1);
-  chart.data.datasets[0].data = scores;
-  chart.update();
-}
-
-updateChart();
-</script>
-
-  <!-- Instructions Popup Modal -->
-<div id="instructionsModal" style="
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-">
-  <div style="
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    max-width: 600px;
-    width: 90%;
-    padding: 25px;
-    text-align: center;
-    animation: fadeIn 0.4s ease-in-out;
-  ">
-    <h2>How to Play Dentortle</h2>
-    <p><b>Dentortle</b> is a dental pathology guessing game inspired by Wordle!</p>
-    <ul style="text-align:left; display:inline-block; line-height:1.6;">
-      <li>Each case has <b>6 clues</b> describing a specific oral pathology.</li>
-      <li>Type your diagnosis — matching answers will appear as suggestions.</li>
-      <li>After each wrong guess, a <b>new clue</b> appears.</li>
-      <li>You get <b>6 total guesses</b> per case.</li>
-      <li>Play the <b>Daily Puzzle</b> or try <b>Unlimited Mode</b> for extra practice.</li>
-    </ul>
-    <button onclick="closeModal()" style="
-      background-color: #0078D7;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-    ">Start Game</button>
-  </div>
-</div>
-
-<!-- Modal fade animation -->
-<style>
-@keyframes fadeIn {
-  from {opacity: 0; transform: scale(0.95);}
-  to {opacity: 1; transform: scale(1);}
-}
-</style>
-
-<!-- JS to close modal -->
-<script>
-function closeModal() {
-  document.getElementById("instructionsModal").style.display = "none";
-}
-</script>
-
-<!-- SHARE UI (paste this before </body>) -->
-<div id="shareContainer" style="display:none; text-align:center; margin-top:20px;">
-  <div id="shareGrid" style="font-size:24px; letter-spacing:4px; margin-bottom:8px;"></div>
-  <button id="shareButton" style="
-    background-color:#4CAF50;
-    color:white;
-    border:none;
-    padding:10px 20px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-  ">Share Results 📋</button>
-  <p id="shareMessage" style="color:green; display:none; margin-top:8px;">Copied to clipboard!</p>
-</div>
-
-<script>
-/* ---------- Helper: day key ---------- */
-function getDayKey() {
-  // Use local epoch baseline so day number is stable
-  const today = new Date();
-  const dayString = today.toISOString().slice(0,10); // YYYY-MM-DD
-  return 'dentordle_daily_' + dayString;
-}
-
-/* ---------- Show the share container and hook copy ---------- */
+// ===== SHARE BUTTON =====
 function showShareButton(resultText, emojiGrid) {
   const shareContainer = document.getElementById("shareContainer");
   const shareButton = document.getElementById("shareButton");
   const shareMessage = document.getElementById("shareMessage");
   const shareGrid = document.getElementById("shareGrid");
 
-  shareGrid.textContent = emojiGrid; // show emoji preview
+  shareGrid.textContent = emojiGrid;
   shareContainer.style.display = "block";
 
-  // Set up the copy action
   shareButton.onclick = () => {
     navigator.clipboard.writeText(resultText).then(() => {
       shareMessage.style.display = "block";
-      setTimeout(() => shareMessage.style.display = "none", 2000);
-    }).catch(()=> {
-      // fallback: select text in a temporary textarea
-      const ta = document.createElement('textarea');
-      ta.value = resultText;
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); shareMessage.style.display = "block"; setTimeout(()=>shareMessage.style.display='none',2000); } catch(e) {}
-      ta.remove();
+      setTimeout(() => (shareMessage.style.display = "none"), 2000);
     });
   };
 }
 
-/* ---------- Create and store daily result, then show share ---------- */
-/*
-  correctClueCount: 1..6 (if won) OR 6 for lost (we treat lost as 6 with won=false)
-  won: boolean
-*/
-function endDailyPuzzle(correctClueCount, won=true) {
-  // compute day number (relative to an epoch) for display like Wordle
-  const epoch = new Date('2025-01-01'); // you can change epoch if desired
+// ===== END DAILY PUZZLE =====
+function endDailyPuzzle(correctClueCount, won = true) {
+  const epoch = new Date("2025-01-01");
   const today = new Date();
   const dayNumber = Math.floor((today - epoch) / (1000 * 60 * 60 * 24));
 
-  // Build emoji grid: 🟥 for incorrect, 🟩 for correct attempt, ⬛ for unused
   let emojiGrid = "";
   if (won) {
     emojiGrid = "🟥".repeat(Math.max(0, correctClueCount - 1)) + "🟩" + "⬛".repeat(6 - correctClueCount);
@@ -481,70 +313,135 @@ function endDailyPuzzle(correctClueCount, won=true) {
     emojiGrid = "🟥".repeat(6);
   }
 
-  const resultText = `Dentordle Daily #${dayNumber} — ${won ? (correctClueCount + "/6 clues 🦷") : "X/6 clues 💀"}\n${emojiGrid}\nhttps://davidabbott33-hub.github.io/Dentordle/`;
+  const resultText = `Dentordle Daily #${dayNumber} — ${won ? correctClueCount + "/6 clues 🦷" : "X/6 clues 💀"}\n${emojiGrid}\nhttps://davidabbott33-hub.github.io/Dentordle/`;
 
-  // store outcome so user cannot replay daily (or can view result)
   const dayKey = getDayKey();
-  const stored = { date: new Date().toISOString(), score: correctClueCount, won: !!won, shareText: resultText, emojiGrid };
-  try { localStorage.setItem(dayKey, JSON.stringify(stored)); } catch(e){console.warn("localStorage failed:",e);}
+  const stored = { date: today.toISOString(), score: correctClueCount, won, shareText: resultText, emojiGrid };
+  localStorage.setItem(dayKey, JSON.stringify(stored));
 
-  // show share UI
   showShareButton(resultText, emojiGrid);
 }
 
-/* ---------- Call when user attempts to start Daily and already played ---------- */
+// ===== IF USER ALREADY PLAYED DAILY =====
 function showDailyPlayedMessage() {
   const dayKey = getDayKey();
   const val = localStorage.getItem(dayKey);
   if (!val) return false;
+
   try {
     const obj = JSON.parse(val);
     const score = obj.score;
     const won = obj.won;
-    const emojiGrid = obj.emojiGrid || ("🟥".repeat(6));
+    const emojiGrid = obj.emojiGrid || "🟥".repeat(6);
 
-    // Create or use a message area
-    const resultDiv = document.getElementById('result') || document.createElement('div');
-    resultDiv.style.marginTop = "12px";
-    resultDiv.style.textAlign = "center";
     resultDiv.innerHTML = `
       <strong>You've already played today's case!</strong><br>
-      ${won ? `${score}/6 clues 🦷` : `X/6 clues 💀`}
+      ${won ? `You solved it in <b>${score}/6 clues 🦷</b>` : `You used all 6 clues 💀`}<br><br>
     `;
-
-    if (!document.getElementById('result')) {
-      const container = document.querySelector('.game-container') || document.body;
-      container.appendChild(resultDiv);
-    }
-
-    // Always show share button for their stored result
     showShareButton(obj.shareText, emojiGrid);
+    submitGuess.disabled = true;
+    gameDiv.style.display = "block";
     return true;
-  } catch(e) {
-    console.error("Failed to parse stored daily:", e);
+  } catch (e) {
+    console.error("Error parsing stored daily data:", e);
     return false;
   }
 }
 
+// ===== START GAME =====
+function startGame() {
+  mode = modeSelect.value;
+  clueIndex = 0;
+  resultDiv.innerHTML = "";
+  guessInput.value = "";
+  nextCaseBtn.style.display = "none";
+  document.getElementById("shareContainer").style.display = "none";
 
-/* ---------- Usage notes for integrating with your existing code ----------
-1) When the user finishes the DAILY puzzle (wins or runs out of clues), call:
-     endDailyPuzzle(clueCount, won);
-   Example: endDailyPuzzle(4, true)  // got it on clue #4
-            endDailyPuzzle(6, false) // used all 6 and lost
+  if (mode === "daily") {
+    if (showDailyPlayedMessage()) return;
+    currentCase = getDailyCase();
+  } else {
+    currentCase = cases[Math.floor(Math.random() * cases.length)];
+  }
 
-2) When the user clicks "Start Daily" (or your start function executes for daily mode),
-   before actually starting, call showDailyPlayedMessage():
-     if (showDailyPlayedMessage()) { // user already played - don't start a new daily
-         return; // stop the start flow (or let them view result)
-     } else {
-         // start the daily
-     }
+  gameDiv.style.display = "block";
+  submitGuess.disabled = false;
+  displayClues();
+}
 
-This block already stores and shows the share UI. Ensure you remove older, duplicate share code.
--------------------------------------------------------------------------- */
+// ===== DISPLAY CLUES =====
+function displayClues() {
+  let html = "";
+  for (let i = 0; i <= clueIndex; i++) {
+    if (currentCase.clues[i]) html += `<p><b>Clue ${i + 1}:</b> ${currentCase.clues[i]}</p>`;
+  }
+  cluesDiv.innerHTML = html;
+}
+
+// ===== HANDLE GUESSES =====
+function submitGuessFunc() {
+  const guess = guessInput.value.trim();
+  if (!guess) return;
+
+  if (guess.toLowerCase() === currentCase.answer.toLowerCase()) {
+    resultDiv.innerHTML = `🎉 Correct! The diagnosis is: <b>${currentCase.answer}</b>`;
+    scores.push(clueIndex + 1);
+    localStorage.setItem("dentordleScores", JSON.stringify(scores));
+    submitGuess.disabled = true;
+    nextCaseBtn.style.display = mode === "unlimited" ? "inline-block" : "none";
+    updateChart();
+
+    if (mode === "daily") endDailyPuzzle(clueIndex + 1, true);
+  } else {
+    clueIndex++;
+    if (clueIndex >= currentCase.clues.length) {
+      resultDiv.innerHTML = `❌ Out of clues! The correct diagnosis was: <b>${currentCase.answer}</b>`;
+      scores.push(currentCase.clues.length);
+      localStorage.setItem("dentordleScores", JSON.stringify(scores));
+      submitGuess.disabled = true;
+      nextCaseBtn.style.display = mode === "unlimited" ? "inline-block" : "none";
+      updateChart();
+
+      if (mode === "daily") endDailyPuzzle(6, false);
+    } else {
+      displayClues();
+    }
+  }
+  guessInput.value = "";
+}
+
+// ===== CHART =====
+const ctx = document.getElementById("scoreChart").getContext("2d");
+const chart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: scores.map((_, i) => i + 1),
+    datasets: [
+      {
+        label: "Guesses to Solve",
+        data: scores,
+        borderColor: "#0077b6",
+        backgroundColor: "rgba(0,119,182,0.2)",
+        tension: 0.2,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    scales: { y: { min: 0, max: 6, ticks: { stepSize: 1 } } },
+  },
+});
+
+function updateChart() {
+  chart.data.labels = scores.map((_, i) => i + 1);
+  chart.data.datasets[0].data = scores;
+  chart.update();
+}
+
+updateChart();
+
+// ===== EVENT LISTENERS =====
+startBtn.addEventListener("click", startGame);
+submitGuess.addEventListener("click", submitGuessFunc);
+nextCaseBtn.addEventListener("click", startGame);
 </script>
-
-
-</body>
-</html>
