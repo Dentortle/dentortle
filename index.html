@@ -411,9 +411,9 @@ function closeModal() {
 }
 </script>
 
-
-  <!-- Share Results Button (hidden until puzzle is done) -->
+<!-- SHARE UI (paste this before </body>) -->
 <div id="shareContainer" style="display:none; text-align:center; margin-top:20px;">
+  <div id="shareGrid" style="font-size:24px; letter-spacing:4px; margin-bottom:8px;"></div>
   <button id="shareButton" style="
     background-color:#4CAF50;
     color:white;
@@ -427,50 +427,117 @@ function closeModal() {
 </div>
 
 <script>
-// Shows the share button after finishing
-function showShareButton(resultText) {
+/* ---------- Helper: day key ---------- */
+function getDayKey() {
+  // Use local epoch baseline so day number is stable
+  const today = new Date();
+  const dayString = today.toISOString().slice(0,10); // YYYY-MM-DD
+  return 'dentordle_daily_' + dayString;
+}
+
+/* ---------- Show the share container and hook copy ---------- */
+function showShareButton(resultText, emojiGrid) {
   const shareContainer = document.getElementById("shareContainer");
   const shareButton = document.getElementById("shareButton");
   const shareMessage = document.getElementById("shareMessage");
-  
+  const shareGrid = document.getElementById("shareGrid");
+
+  shareGrid.textContent = emojiGrid; // show emoji preview
   shareContainer.style.display = "block";
-  
+
+  // Set up the copy action
   shareButton.onclick = () => {
     navigator.clipboard.writeText(resultText).then(() => {
       shareMessage.style.display = "block";
       setTimeout(() => shareMessage.style.display = "none", 2000);
+    }).catch(()=> {
+      // fallback: select text in a temporary textarea
+      const ta = document.createElement('textarea');
+      ta.value = resultText;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); shareMessage.style.display = "block"; setTimeout(()=>shareMessage.style.display='none',2000); } catch(e) {}
+      ta.remove();
     });
   };
 }
 
+/* ---------- Create and store daily result, then show share ---------- */
 /*
- Generates and shows a Wordle-style share summary:
- - correctClueCount: number of the clue they got it on (1–6)
- - won: true if they guessed correctly, false if failed
+  correctClueCount: 1..6 (if won) OR 6 for lost (we treat lost as 6 with won=false)
+  won: boolean
 */
 function endDailyPuzzle(correctClueCount, won=true) {
+  // compute day number (relative to an epoch) for display like Wordle
+  const epoch = new Date('2025-01-01'); // you can change epoch if desired
   const today = new Date();
-  const dayNumber = Math.floor((today - new Date('2025-01-01')) / (1000 * 60 * 60 * 24));
+  const dayNumber = Math.floor((today - epoch) / (1000 * 60 * 60 * 24));
 
-  // 🟥 wrong clues before correct one
-  // 🟩 for the clue they got it right
-  // ⬛ for unused clues
+  // Build emoji grid: 🟥 for incorrect, 🟩 for correct attempt, ⬛ for unused
   let emojiGrid = "";
-
   if (won) {
-    emojiGrid =
-      "🟥".repeat(correctClueCount - 1) + // red boxes for incorrect attempts
-      "🟩" +                             // green for correct
-      "⬛".repeat(6 - correctClueCount);  // black for remaining clues
+    emojiGrid = "🟥".repeat(Math.max(0, correctClueCount - 1)) + "🟩" + "⬛".repeat(6 - correctClueCount);
   } else {
-    emojiGrid = "🟥".repeat(6); // all red if failed all 6
+    emojiGrid = "🟥".repeat(6);
   }
 
-  const resultText = `Dentordle Daily #${dayNumber} — ${won ? correctClueCount + "/6 clues 🦷" : "X/6 clues 💀"}\n${emojiGrid}\nhttps://davidabbott33-hub.github.io/Dentordle/`;
+  const resultText = `Dentordle Daily #${dayNumber} — ${won ? (correctClueCount + "/6 clues 🦷") : "X/6 clues 💀"}\n${emojiGrid}\nhttps://davidabbott33-hub.github.io/Dentordle/`;
 
-  showShareButton(resultText);
+  // store outcome so user cannot replay daily (or can view result)
+  const dayKey = getDayKey();
+  const stored = { date: new Date().toISOString(), score: correctClueCount, won: !!won, shareText: resultText, emojiGrid };
+  try { localStorage.setItem(dayKey, JSON.stringify(stored)); } catch(e){console.warn("localStorage failed:",e);}
+
+  // show share UI
+  showShareButton(resultText, emojiGrid);
 }
+
+/* ---------- Call when user attempts to start Daily and already played ---------- */
+function showDailyPlayedMessage() {
+  const dayKey = getDayKey();
+  const val = localStorage.getItem(dayKey);
+  if (!val) return false;
+  try {
+    const obj = JSON.parse(val);
+    const score = obj.score;
+    const won = obj.won;
+    const emojiGrid = obj.emojiGrid || ("🟥".repeat(6));
+    // show a friendly message on-screen rather than alert
+    // we assume you have a `resultDiv` element to display messages (if not, adapt)
+    const resultDiv = document.getElementById('result') || document.createElement('div');
+    resultDiv.style.marginTop = "12px";
+    resultDiv.innerHTML = `<strong>You've already played today's Daily Puzzle.</strong><br>${won ? `${score}/6 clues` : `X/6 clues (failed)`}`;
+    if (!document.getElementById('result')) {
+      // attach if it wasn't present
+      const container = document.querySelector('.game-container') || document.body;
+      container.appendChild(resultDiv);
+    }
+    // show share UI for this stored result
+    showShareButton(obj.shareText, emojiGrid);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+/* ---------- Usage notes for integrating with your existing code ----------
+1) When the user finishes the DAILY puzzle (wins or runs out of clues), call:
+     endDailyPuzzle(clueCount, won);
+   Example: endDailyPuzzle(4, true)  // got it on clue #4
+            endDailyPuzzle(6, false) // used all 6 and lost
+
+2) When the user clicks "Start Daily" (or your start function executes for daily mode),
+   before actually starting, call showDailyPlayedMessage():
+     if (showDailyPlayedMessage()) { // user already played - don't start a new daily
+         return; // stop the start flow (or let them view result)
+     } else {
+         // start the daily
+     }
+
+This block already stores and shows the share UI. Ensure you remove older, duplicate share code.
+-------------------------------------------------------------------------- */
 </script>
+
 
 </body>
 </html>
