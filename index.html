@@ -256,183 +256,105 @@ const answerList = document.getElementById("answerList");
 allAnswers.forEach(a => { const option = document.createElement("option"); option.value = a; answerList.appendChild(option); });
 
 let currentCase, clueIndex, mode;
-let scores = JSON.parse(localStorage.getItem("dentordleScores") || "[]");
+    let scores = JSON.parse(localStorage.getItem("dentordleScores") || "[]");
 
-const startBtn = document.getElementById("startBtn");
-const submitGuess = document.getElementById("submitGuess");
-const nextCaseBtn = document.getElementById("nextCase");
-const resultDiv = document.getElementById("result");
-const cluesDiv = document.getElementById("clues");
-const guessInput = document.getElementById("guessInput");
-const gameDiv = document.getElementById("game");
-const modeSelect = document.getElementById("mode");
+    const startBtn = document.getElementById("startBtn");
+    const submitGuess = document.getElementById("submitGuess");
+    const nextCaseBtn = document.getElementById("nextCase");
+    const resultDiv = document.getElementById("result");
+    const cluesDiv = document.getElementById("clues");
+    const guessInput = document.getElementById("guessInput");
+    const gameDiv = document.getElementById("game");
+    const modeSelect = document.getElementById("mode");
 
-function getDailyCase() {
-  const today = new Date();
-  const daySeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-  return cases[daySeed % cases.length];
-}
+    function getDailyCase() {
+      const daySeed = Math.floor(Date.now() / (1000*60*60*24));
+      return cases[daySeed % cases.length];
+    }
 
-function displayClues() {
-  let html = "";
-  for (let i = 0; i <= clueIndex; i++) {
-    if (currentCase.clues[i]) html += `<p><b>Clue ${i + 1}:</b> ${currentCase.clues[i]}</p>`;
-  }
-  cluesDiv.innerHTML = html;
-}
+    function getRandomCase() {
+      return cases[Math.floor(Math.random()*cases.length)];
+    }
 
-function startGame() {
-  mode = modeSelect.value;
-  clueIndex = 0;
-  resultDiv.innerHTML = "";
-  guessInput.value = "";
-  nextCaseBtn.style.display = "none";
+    function startGame() {
+      mode = modeSelect.value;
+      currentCase = (mode === "daily") ? getDailyCase() : getRandomCase();
+      clueIndex = 0;
+      resultDiv.textContent = "";
+      nextCaseBtn.style.display = "none";
+      gameDiv.style.display = "block";
+      cluesDiv.innerHTML = `<p><b>Clue 1:</b> ${currentCase.clues[0]}</p>`;
+    }
 
-  if (mode === "daily") {
-    if (showDailyPlayedMessage()) return; // already played
-    currentCase = getDailyCase();
-  } else {
-    currentCase = cases[Math.floor(Math.random() * cases.length)];
-  }
+    function submitGuessFunc() {
+      const guess = guessInput.value.trim().toLowerCase();
+      const answer = currentCase.answer.toLowerCase();
+      if (!guess) return;
 
-  gameDiv.style.display = "block";
-  submitGuess.disabled = false;
-  displayClues();
-}
+      if (guess === answer) {
+        resultDiv.innerHTML = `<span style='color:green'>✅ Correct! The answer was <b>${currentCase.answer}</b> (${clueIndex+1}/6 clues)</span>`;
+        scores.push(clueIndex+1);
+        localStorage.setItem("dentordleScores", JSON.stringify(scores));
+        updateChart();
+        nextCaseBtn.style.display = "inline-block";
+        submitGuess.disabled = true;
+      } else {
+        clueIndex++;
+        if (clueIndex >= 6) {
+          resultDiv.innerHTML = `<span style='color:red'>❌ Out of clues! The answer was <b>${currentCase.answer}</b>.</span>`;
+          scores.push(6);
+          localStorage.setItem("dentordleScores", JSON.stringify(scores));
+          updateChart();
+          nextCaseBtn.style.display = "inline-block";
+          submitGuess.disabled = true;
+        } else {
+          let html = "";
+          for (let i=0;i<=clueIndex;i++) {
+            html += `<p><b>Clue ${i+1}:</b> ${currentCase.clues[i]}</p>`;
+          }
+          cluesDiv.innerHTML = html;
+        }
+      }
+      guessInput.value = "";
+    }
 
-function submitGuessFunc() {
-  const guess = guessInput.value.trim();
-  if (!guess) return;
+    function nextCase() {
+      submitGuess.disabled = false;
+      resultDiv.textContent = "";
+      if (mode === "daily") {
+        resultDiv.innerHTML = "✅ You've already played today's case!";
+      } else {
+        currentCase = getRandomCase();
+        clueIndex = 0;
+        cluesDiv.innerHTML = `<p><b>Clue 1:</b> ${currentCase.clues[0]}</p>`;
+      }
+      nextCaseBtn.style.display = "none";
+    }
 
-  if (guess.toLowerCase() === currentCase.answer.toLowerCase()) {
-    resultDiv.innerHTML = `🎉 Correct! The diagnosis is: <b>${currentCase.answer}</b>`;
-    scores.push(clueIndex + 1);
-    localStorage.setItem("dentordleScores", JSON.stringify(scores));
-    submitGuess.disabled = true;
-    nextCaseBtn.style.display = mode === "unlimited" ? "inline-block" : "none";
-
-    if (mode === "daily") endDailyPuzzle(clueIndex + 1, true);
-
-    updateChart();
-  } else {
-    clueIndex++;
-    if (clueIndex >= currentCase.clues.length) {
-      resultDiv.innerHTML = `❌ Out of clues! The correct diagnosis was: <b>${currentCase.answer}</b>`;
-      scores.push(currentCase.clues.length);
-      localStorage.setItem("dentordleScores", JSON.stringify(scores));
-      submitGuess.disabled = true;
-      nextCaseBtn.style.display = mode === "unlimited" ? "inline-block" : "none";
-
-      if (mode === "daily") endDailyPuzzle(currentCase.clues.length, false);
-
-      updateChart();
-    } else displayClues();
-  }
-
-  guessInput.value = "";
-}
-
-startBtn.addEventListener("click", startGame);
-submitGuess.addEventListener("click", submitGuessFunc);
-nextCaseBtn.addEventListener("click", startGame);
-
-/* ---------- CHART ---------- */
-const scoreChartEl = document.getElementById("scoreChart");
-let chart = null;
-if (scoreChartEl) {
-  const ctx = scoreChartEl.getContext("2d");
-  chart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: scores.map((_, i) => i + 1),
-      datasets: [{
-        label: "Guesses to Solve",
-        data: scores,
-        borderColor: "#0077b6",
-        backgroundColor: "rgba(0,119,182,0.2)",
-        tension: 0.2
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { min: 0, max: 6, ticks: { stepSize: 1 } }
+    // ======== CHART =========
+    let chart;
+    function updateChart() {
+      const ctx = document.getElementById('scoreChart').getContext('2d');
+      if (!chart) {
+        chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: scores.map((_,i)=>i+1),
+            datasets: [{label: 'Clues Used per Round', data: scores, borderWidth: 1}]
+          },
+          options: {scales: {y: {beginAtZero:true, max:6}}}
+        });
+      } else {
+        chart.data.labels = scores.map((_,i)=>i+1);
+        chart.data.datasets[0].data = scores;
+        chart.update();
       }
     }
-  });
-}
 
-function updateChart() {
-  if (!chart) return;
-  chart.data.labels = scores.map((_, i) => i + 1);
-  chart.data.datasets[0].data = scores;
-  chart.update();
-}
-
-updateChart();
-
-/* ---------- DAILY & SHARE ---------- */
-function getDayKey() {
-  const today = new Date();
-  return "dentordle_daily_" + today.toISOString().slice(0, 10);
-}
-
-function showShareButton(resultText, emojiGrid) {
-  const shareContainer = document.getElementById("shareContainer");
-  const shareButton = document.getElementById("shareButton");
-  const shareMessage = document.getElementById("shareMessage");
-  const shareGrid = document.getElementById("shareGrid");
-
-  shareGrid.textContent = emojiGrid;
-  shareContainer.style.display = "block";
-
-  shareButton.onclick = () => {
-    navigator.clipboard.writeText(resultText).then(() => {
-      shareMessage.style.display = "block";
-      setTimeout(() => (shareMessage.style.display = "none"), 2000);
-    }).catch(() => {
-      const ta = document.createElement("textarea");
-      ta.value = resultText;
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand("copy"); shareMessage.style.display = "block"; setTimeout(() => (shareMessage.style.display = "none"), 2000); } catch(e) {}
-      ta.remove();
-    });
-  };
-}
-
-function endDailyPuzzle(correctClueCount, won = true) {
-  const epoch = new Date("2025-01-01");
-  const today = new Date();
-  const dayNumber = Math.floor((today - epoch) / (1000 * 60 * 60 * 24));
-
-  let emojiGrid = won ? "🟥".repeat(Math.max(0, correctClueCount - 1)) + "🟩" + "⬛".repeat(6 - correctClueCount) : "🟥".repeat(6);
-
-  const resultText = `Dentordle Daily #${dayNumber} — ${won ? correctClueCount + "/6 clues 🦷" : "X/6 clues 💀"}\n${emojiGrid}\nhttps://davidabbott33-hub.github.io/Dentordle/`;
-
-  const dayKey = getDayKey();
-  localStorage.setItem(dayKey, JSON.stringify({ date: new Date().toISOString(), score: correctClueCount, won, shareText: resultText, emojiGrid }));
-
-  showShareButton(resultText, emojiGrid);
-}
-
-function showDailyPlayedMessage() {
-  const dayKey = getDayKey();
-  const val = localStorage.getItem(dayKey);
-  if (!val) return false;
-
-  try {
-    const obj = JSON.parse(val);
-    resultDiv.style.marginTop = "12px";
-    resultDiv.style.textAlign = "center";
-    resultDiv.innerHTML = `<strong>You've already played today's case!</strong><br>${obj.won ? obj.score + "/6 clues 🦷" : "X/6 clues 💀"}`;
-    submitGuess.disabled = true;
-    displayClues();
-    showShareButton(obj.shareText, obj.emojiGrid || "🟥".repeat(6));
-    return true;
-  } catch (e) {
-    console.error("Failed to parse stored daily:", e);
-    return false;
-  }
-}
-
+    startBtn.onclick = startGame;
+    submitGuess.onclick = submitGuessFunc;
+    nextCaseBtn.onclick = nextCase;
+    updateChart();
+  </script>
+</body>
+</html>
