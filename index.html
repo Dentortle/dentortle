@@ -411,5 +411,66 @@ function closeModal() {
 }
 </script>
 
+
+  <!-- Share Results Button (hidden until puzzle is done) -->
+<div id="shareContainer" style="display:none; text-align:center; margin-top:20px;">
+  <button id="shareButton" style="
+    background-color:#4CAF50;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+  ">Share Results 📋</button>
+  <p id="shareMessage" style="color:green; display:none; margin-top:8px;">Copied to clipboard!</p>
+</div>
+
+<script>
+// Shows the share button after finishing
+function showShareButton(resultText) {
+  const shareContainer = document.getElementById("shareContainer");
+  const shareButton = document.getElementById("shareButton");
+  const shareMessage = document.getElementById("shareMessage");
+  
+  shareContainer.style.display = "block";
+  
+  shareButton.onclick = () => {
+    navigator.clipboard.writeText(resultText).then(() => {
+      shareMessage.style.display = "block";
+      setTimeout(() => shareMessage.style.display = "none", 2000);
+    });
+  };
+}
+
+/*
+ Generates and shows a Wordle-style share summary:
+ - correctClueCount: number of the clue they got it on (1–6)
+ - won: true if they guessed correctly, false if failed
+*/
+function endDailyPuzzle(correctClueCount, won=true) {
+  const today = new Date();
+  const dayNumber = Math.floor((today - new Date('2025-01-01')) / (1000 * 60 * 60 * 24));
+
+  // 🟥 wrong clues before correct one
+  // 🟩 for the clue they got it right
+  // ⬛ for unused clues
+  let emojiGrid = "";
+
+  if (won) {
+    emojiGrid =
+      "🟥".repeat(correctClueCount - 1) + // red boxes for incorrect attempts
+      "🟩" +                             // green for correct
+      "⬛".repeat(6 - correctClueCount);  // black for remaining clues
+  } else {
+    emojiGrid = "🟥".repeat(6); // all red if failed all 6
+  }
+
+  const resultText = `Dentordle Daily #${dayNumber} — ${won ? correctClueCount + "/6 clues 🦷" : "X/6 clues 💀"}\n${emojiGrid}\nhttps://davidabbott33-hub.github.io/Dentordle/`;
+
+  showShareButton(resultText);
+}
+</script>
+
 </body>
 </html>
