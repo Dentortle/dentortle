@@ -280,17 +280,18 @@ function startGame() {
   guessInput.value = "";
   nextCaseBtn.style.display = "none";
 
-  if(mode==="daily"){
-    if(localStorage.getItem("dentordleDailyPlayed") === new Date().toDateString()){
-      resultDiv.innerHTML = "✅ You've already played today's case!";
-      submitGuess.disabled = true;
-      gameDiv.style.display = "block";
-      return;
-    }
-    currentCase = getDailyCase();
-  } else {
-    currentCase = cases[Math.floor(Math.random()*cases.length)];
+  if (mode === "daily") {
+  // Check if user already played
+  if (showDailyPlayedMessage()) {
+    gameDiv.style.display = "block";
+    submitGuess.disabled = true;
+    return;
   }
+  currentCase = getDailyCase();
+} else {
+  currentCase = cases[Math.floor(Math.random() * cases.length)];
+}
+
 
   gameDiv.style.display = "block";
   submitGuess.disabled = false;
@@ -315,7 +316,7 @@ function submitGuessFunc(){
     localStorage.setItem("dentordleScores", JSON.stringify(scores));
     submitGuess.disabled=true;
     nextCaseBtn.style.display = mode==="unlimited"?"inline-block":"none";
-    if(mode==="daily") localStorage.setItem("dentordleDailyPlayed", new Date().toDateString());
+   if (mode === "daily") endDailyPuzzle(clueIndex + 1, true);
     updateChart();
   } else {
     clueIndex++;
@@ -325,7 +326,7 @@ function submitGuessFunc(){
       localStorage.setItem("dentordleScores", JSON.stringify(scores));
       submitGuess.disabled=true;
       nextCaseBtn.style.display = mode==="unlimited"?"inline-block":"none";
-      if(mode==="daily") localStorage.setItem("dentordleDailyPlayed", new Date().toDateString());
+      if (mode === "daily") endDailyPuzzle(6, false);
       updateChart();
     } else displayClues();
   }
