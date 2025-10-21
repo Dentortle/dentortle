@@ -255,7 +255,6 @@ const allAnswers = ["Acinic Cell Adenocarcinoma","Acquired Melanocytic Nevus (In
 const answerList = document.getElementById("answerList");
 allAnswers.forEach(a => { const option = document.createElement("option"); option.value = a; answerList.appendChild(option); });
 
-<script>
 let currentCase, clueIndex, mode;
 let scores = JSON.parse(localStorage.getItem("dentordleScores") || "[]");
 
