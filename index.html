@@ -22,7 +22,7 @@
 </head>
 <body>
   <header>
-    <img src="https://raw.githubusercontent.com/davidabbott33-hub/Dentordle/refs/heads/main/ChatGPT%20Image%20Oct%2017%2C%202025%2C%2002_02_17%20PM.png" alt="Dentist Turtle">
+    <img src="https://raw.githubusercontent.com/davidabbott33-hub/dentortle/refs/heads/main/ChatGPT%20Image%20Oct%2017%2C%202025%2C%2002_02_17%20PM.png" alt="Dentist Turtle">
     <h1>Dentortle</h1>
   </header>
 
@@ -290,7 +290,7 @@ const answerList = document.getElementById("answerList");
 allAnswers.forEach(a => { const option = document.createElement("option"); option.value = a; answerList.appendChild(option); });
 
 let currentCase, clueIndex, mode;
-let scores = JSON.parse(localStorage.getItem("dentordleScores") || "[]");
+let scores = JSON.parse(localStorage.getItem("dentortleScores") || "[]");
 
 const startBtn = document.getElementById("startBtn");
 const submitGuess = document.getElementById("submitGuess");
@@ -345,7 +345,7 @@ function submitGuessFunc() {
   if (guess.toLowerCase() === currentCase.answer.toLowerCase()) {
     resultDiv.innerHTML = `🎉 Correct! The diagnosis is: <b>${currentCase.answer}</b>`;
     scores.push(clueIndex + 1);
-    localStorage.setItem("dentordleScores", JSON.stringify(scores));
+    localStorage.setItem("dentortleScores", JSON.stringify(scores));
     submitGuess.disabled = true;
     nextCaseBtn.style.display = mode === "unlimited" ? "inline-block" : "none";
     if (mode === "daily") endDailyPuzzle(clueIndex + 1, true);
@@ -355,7 +355,7 @@ function submitGuessFunc() {
     if (clueIndex >= currentCase.clues.length) {
       resultDiv.innerHTML = `❌ Out of clues! The correct diagnosis was: <b>${currentCase.answer}</b>`;
       scores.push(currentCase.clues.length);
-      localStorage.setItem("dentordleScores", JSON.stringify(scores));
+      localStorage.setItem("dentortleScores", JSON.stringify(scores));
       submitGuess.disabled = true;
       nextCaseBtn.style.display = mode === "unlimited" ? "inline-block" : "none";
       if (mode === "daily") endDailyPuzzle(6, false);
@@ -417,7 +417,7 @@ function showCopyPopup() {
 function getDayKey() {
   const today = new Date();
   const dayString = today.toISOString().slice(0, 10);
-  return "dentordle_daily_" + dayString;
+  return "dentortle_daily_" + dayString;
 }
 
 /* ---------- Show the share container and hook copy ---------- */
