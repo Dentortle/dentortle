@@ -22,7 +22,7 @@
 </head>
 <body>
   <header>
-    <img src="https://raw.githubusercontent.com/davidabbott33-hub/dentortle/refs/heads/main/ChatGPT%20Image%20Oct%2017%2C%202025%2C%2002_02_17%20PM.png" alt="Dentist Turtle">
+    <img src="https://raw.githubusercontent.com/davidabbott33-hub/dentordle/refs/heads/main/ChatGPT%20Image%20Oct%2017%2C%202025%2C%2002_02_17%20PM.png" alt="Dentist Turtle">
     <h1>Dentortle</h1>
   </header>
 
@@ -452,7 +452,7 @@ function endDailyPuzzle(correctClueCount, won = true) {
     ? "🟥".repeat(Math.max(0, correctClueCount - 1)) + "🟩" + "⬛".repeat(6 - correctClueCount)
     : "🟥".repeat(6);
 
-  const resultText = `Dentortle Daily #${dayNumber} — ${won ? (correctClueCount + "/6 clues 🦷") : "X/6 clues 💀"}\n${emojiGrid}\nhttps://dentortle.github.io/Dentortle/`;
+  const resultText = ` Daily #${dayNumber} — ${won ? (correctClueCount + "/6 clues 🦷") : "X/6 clues 💀"}\n${emojiGrid}\nhttps://dentortle.github.io/dentortle/`;
 
   const dayKey = getDayKey();
   const stored = { date: new Date().toISOString(), score: correctClueCount, won: !!won, shareText: resultText, emojiGrid };
