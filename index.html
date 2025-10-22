@@ -452,7 +452,7 @@ function endDailyPuzzle(correctClueCount, won = true) {
     ? "🟥".repeat(Math.max(0, correctClueCount - 1)) + "🟩" + "⬛".repeat(6 - correctClueCount)
     : "🟥".repeat(6);
 
-  const resultText = `Dentordle Daily #${dayNumber} — ${won ? (correctClueCount + "/6 clues 🦷") : "X/6 clues 💀"}\n${emojiGrid}\nhttps://dentortle.github.io/Dentordle/`;
+  const resultText = `Dentortle Daily #${dayNumber} — ${won ? (correctClueCount + "/6 clues 🦷") : "X/6 clues 💀"}\n${emojiGrid}\nhttps://dentortle.github.io/Dentortle/`;
 
   const dayKey = getDayKey();
   const stored = { date: new Date().toISOString(), score: correctClueCount, won: !!won, shareText: resultText, emojiGrid };
