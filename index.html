@@ -290,7 +290,7 @@ const answerList = document.getElementById("answerList");
 allAnswers.forEach(a => { const option = document.createElement("option"); option.value = a; answerList.appendChild(option); });
 
 let currentCase, clueIndex, mode;
-let scores = JSON.parse(localStorage.getItem("dentortleScores") || "[]");
+let scores = JSON.parse(localStorage.getItem("Scores") || "[]");
 
 const startBtn = document.getElementById("startBtn");
 const submitGuess = document.getElementById("submitGuess");
@@ -345,7 +345,7 @@ function submitGuessFunc() {
   if (guess.toLowerCase() === currentCase.answer.toLowerCase()) {
     resultDiv.innerHTML = `🎉 Correct! The diagnosis is: <b>${currentCase.answer}</b>`;
     scores.push(clueIndex + 1);
-    localStorage.setItem("dentortleScores", JSON.stringify(scores));
+    localStorage.setItem("Scores", JSON.stringify(scores));
     submitGuess.disabled = true;
     nextCaseBtn.style.display = mode === "unlimited" ? "inline-block" : "none";
     if (mode === "daily") endDailyPuzzle(clueIndex + 1, true);
@@ -355,7 +355,7 @@ function submitGuessFunc() {
     if (clueIndex >= currentCase.clues.length) {
       resultDiv.innerHTML = `❌ Out of clues! The correct diagnosis was: <b>${currentCase.answer}</b>`;
       scores.push(currentCase.clues.length);
-      localStorage.setItem("dentortleScores", JSON.stringify(scores));
+      localStorage.setItem("Scores", JSON.stringify(scores));
       submitGuess.disabled = true;
       nextCaseBtn.style.display = mode === "unlimited" ? "inline-block" : "none";
       if (mode === "daily") endDailyPuzzle(6, false);
@@ -417,7 +417,7 @@ function showCopyPopup() {
 function getDayKey() {
   const today = new Date();
   const dayString = today.toISOString().slice(0, 10);
-  return "dentortle_daily_" + dayString;
+  return "_daily_" + dayString;
 }
 
 /* ---------- Show the share container and hook copy ---------- */
